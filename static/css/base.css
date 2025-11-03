@@ -1,21 +1,21 @@
 /* === Light Mode (Default) === */
 :root {
-  --background-color: #f8f9fa;
-  --tile-background: #ffffff;
-  --text-color: #000000;
-  --invert-text-color: #ffffff;
-  --navbar-bg: #00bcd4;
+  --background-color: #ffffff;
+  --tile-background: #1a5c3a; /* Dark green circuit board mask */
+  --text-color: #ffffff;
+  --invert-text-color: #000000;
+  --navbar-bg: #2d9336;
   --navbar-text: white;
-  --sidebar-bg: #eaeaea;
-  --link-hover: #83c5be;
-  --link-default: #2222ff;
-  --link-visited: #29297d;
-  --accent-color: #00bcd4;
-  --accent-hover: #0099a8;
+  --sidebar-bg: #2d6b4f; /* Medium dark green for sidebar */
+  --link-hover: #66ff99; /* Bright green for hover on dark tiles */
+  --link-default: #66d4ff; /* Bright cyan for links on dark tiles */
+  --link-visited: #66aaff; /* Lighter blue for visited */
+  --accent-color: #66d4ff;
+  --accent-hover: #66ff99;
   --success-color: #28a745;
   --success-hover: #218838;
-  --border-color: #dee2e6;
-  --border-hover: #adb5bd;
+  --border-color: #66ff99; /* Bright green border */
+  --border-hover: #66d4ff; /* Cyan border on hover */
   --shadow-color: rgba(0, 0, 0, 0.1);
   --shadow-hover: rgba(0, 0, 0, 0.15);
   --border-radius: 12px;
@@ -25,17 +25,18 @@
   --spacing-md: 1rem;
   --spacing-lg: 1.5rem;
   --spacing-xl: 2rem;
+  --tile-hue-rotate: 100deg;
 }
 
 /* Dark Mode Variables */
 .dark-mode {
-  --background-color: #121212;
-  --tile-background: #1e1e1e;
+  --background-color: #0d4a2c; /* Darker green background for dark mode */
+  --tile-background: #0d2e1c; /* Very dark green tiles for dark mode */
   --text-color: #ffffff;
   --invert-text-color: #000000;
-  --navbar-bg: #18404b;
+  --navbar-bg: #092012;
   --navbar-text: white;
-  --sidebar-bg: #222222;
+  --sidebar-bg: #0b2c0e;
   --link-hover: #66b3a6;
   --link-default: #71e5ff;
   --link-visited: #2bb5ff;
@@ -54,13 +55,27 @@
   --spacing-md: 1rem;
   --spacing-lg: 1.5rem;
   --spacing-xl: 2rem;
+  --tile-hue-rotate: 90deg;
 }
 
 /* Body */
 body {
   font-family: Arial, sans-serif;
-  background: url("/static/background/tile.png") repeat, var(--background-color);
-  padding: 1em; /* Padding around the entire page */
+  padding: 1em;
+  position: relative;
+  background-color: var(--background-color);
+}
+
+/* Tile pattern hue rotation */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("/static/background/tile.png") repeat;
+  filter: hue-rotate(var(--tile-hue-rotate)) saturate(0.8) brightness(0.9);
+  mix-blend-mode: multiply;
+  z-index: -1;
+  pointer-events: none;
 }
 
 /* This could go somewhere else but, anything error-list can be styled with this */

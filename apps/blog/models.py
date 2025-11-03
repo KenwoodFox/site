@@ -6,7 +6,7 @@ from django.utils import timezone
 import markdown
 from django.utils.html import strip_tags
 from django.conf import settings
-from snowsune.models import SiteSetting
+from kitsunerobotics.models import SiteSetting
 
 User = get_user_model()
 

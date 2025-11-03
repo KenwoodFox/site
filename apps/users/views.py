@@ -33,7 +33,7 @@ def send_new_user_webhook(user):
     """New user ping!"""
     try:
         # Get webhook URL from site settings
-        from snowsune.models import SiteSetting
+        from kitsunerobotics.models import SiteSetting
 
         webhook_setting = SiteSetting.objects.filter(key="moderator_webhook").first()
         if not webhook_setting or not webhook_setting.value:

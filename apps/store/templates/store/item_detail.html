@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ item.title }} - Store - KitsuneRobotics{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'store/store.css' %}">
+{% endblock %}
+
+{% block meta_description %}{{ item.description|truncatewords:30 }}{% endblock %}
+
+{% block content %}
+<div class="store-item-detail">
+    <div class="store-item-detail-main">
+        <div class="store-item-detail-images">
+            {% if item.featured_image %}
+            <div class="store-item-main-image">
+                <img src="{{ item.featured_image.url }}" alt="{{ item.title }}">
+            </div>
+            {% endif %}
+
+            {% if item.images.all %}
+            <div class="store-item-gallery">
+                {% for image in item.images.all %}
+                <div class="store-item-gallery-item">
+                    <img src="{{ image.image.url }}" alt="{{ image.alt_text|default:item.title }}">
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="store-item-detail-info">
+            <h1 class="store-item-detail-title">{{ item.title }}</h1>
+
+            <div class="store-item-detail-price">
+                <span class="price-amount">${{ item.price }}</span>
+                <span class="price-currency">{{ item.currency }}</span>
+            </div>
+
+            {% if item.is_available %}
+            <div class="store-item-availability in-stock">
+                <span>✓ In Stock</span>
+            </div>
+            {% else %}
+            <div class="store-item-availability out-of-stock">
+                <span>✗ Out of Stock</span>
+            </div>
+            {% endif %}
+
+            {% if item.stock_quantity > 0 %}
+            <div class="store-item-stock">
+                <p>Only {{ item.stock_quantity }} left!</p>
+            </div>
+            {% endif %}
+
+            <div class="store-item-description-full">
+                {% if item.description_html %}
+                {{ item.description_html|safe }}
+                {% elif item.description %}
+                <p>{{ item.description|linebreaks }}</p>
+                {% endif %}
+            </div>
+
+            <div class="store-item-actions">
+                {% if item.is_available %}
+                <button class="store-buy-button" disabled>Add to Cart (Coming Soon)</button>
+                {% else %}
+                <button class="store-buy-button" disabled>Currently Unavailable</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="store-item-detail-back">
+        <a href="{% url 'store:store_list' %}" class="store-back-link">← Back to Store</a>
+    </div>
+</div>
+{% endblock %}

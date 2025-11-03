@@ -31,7 +31,7 @@ Allow: /
 Crawl-delay: 2
 
 # Sitemap location
-Sitemap: https://snowsune.net/sitemap.xml
+Sitemap: https://kitsunerobotics.com/sitemap.xml
 
 # Robots! If you're reading this, you're cool~
 # Pls don't overload my little server tho! ty!

@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Store - KitsuneRobotics{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'store/store.css' %}">
+{% endblock %}
+
+{% block meta_description %}Browse our store for robotics projects, tools, and more!{% endblock %}
+
+{% block content %}
+<header class="page-header">
+    <h1>Store</h1>
+    <p class="lead">Browse available items</p>
+</header>
+
+<div class="store-content">
+    <!-- Search and Filters -->
+    <div class="store-filters">
+        <form method="get" class="store-search-form">
+            <input type="text" name="search" placeholder="Search items..." value="{{ request.GET.search }}"
+                class="store-search-input">
+            <button type="submit" class="store-search-button">Search</button>
+        </form>
+
+        <form method="get" class="store-filter-form">
+            <label>
+                <input type="checkbox" name="in_stock" value="true"
+                    {% if request.GET.in_stock == "true" %}checked{% endif %}>
+                In Stock Only
+            </label>
+            <button type="submit" class="store-filter-button">Filter</button>
+        </form>
+    </div>
+
+    <!-- Store Items Grid -->
+    {% if items %}
+    <div class="store-items-grid">
+        {% for item in items %}
+        <div class="store-item-card">
+            <a href="{{ item.get_absolute_url }}" class="store-item-link">
+                {% if item.featured_image %}
+                <div class="store-item-image">
+                    <img src="{{ item.featured_image.url }}" alt="{{ item.title }}" loading="lazy">
+                </div>
+                {% endif %}
+                <div class="store-item-info">
+                    <h3 class="store-item-title">{{ item.title }}</h3>
+                    <div class="store-item-price">${{ item.price }}</div>
+                    {% if item.description %}
+                    <p class="store-item-description">{{ item.description|truncatewords:20 }}</p>
+                    {% endif %}
+                    {% if not item.is_available %}
+                    <span class="store-item-unavailable">Out of Stock</span>
+                    {% endif %}
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.in_stock %}&in_stock={{ request.GET.in_stock }}{% endif %}"
+            class="pagination-link">Previous</a>
+        {% endif %}
+
+        <span class="pagination-current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.in_stock %}&in_stock={{ request.GET.in_stock }}{% endif %}"
+            class="pagination-link">Next</a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% else %}
+    <div class="store-empty">
+        <p>No items found. Check back soon!</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

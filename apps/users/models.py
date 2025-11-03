@@ -58,7 +58,7 @@ class CustomUser(AbstractUser):
         if cached_token:
             return cached_token
 
-        from snowsune.encryption import decrypt_token
+        from kitsunerobotics.encryption import decrypt_token
 
         decrypted = decrypt_token(self.discord_access_token)
         if decrypted:
@@ -71,7 +71,7 @@ class CustomUser(AbstractUser):
 
     def set_discord_access_token(self, token):
         """Set encrypted Discord access token"""
-        from snowsune.encryption import encrypt_token
+        from kitsunerobotics.encryption import encrypt_token
         from django.core.cache import cache
 
         self.discord_access_token = encrypt_token(token)
@@ -81,13 +81,13 @@ class CustomUser(AbstractUser):
 
     def get_discord_refresh_token(self):
         """Get decrypted Discord refresh token"""
-        from snowsune.encryption import decrypt_token
+        from kitsunerobotics.encryption import decrypt_token
 
         return decrypt_token(self.discord_refresh_token)
 
     def set_discord_refresh_token(self, token):
         """Set encrypted Discord refresh token"""
-        from snowsune.encryption import encrypt_token
+        from kitsunerobotics.encryption import encrypt_token
 
         self.discord_refresh_token = encrypt_token(token)
 

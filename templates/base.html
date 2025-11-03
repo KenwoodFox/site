@@ -20,18 +20,18 @@
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{% block title %}Snowsune.net{% endblock %}</title>
+  <title>{% block title %}KitsuneRobotics{% endblock %}</title>
 
   {% block header %}{% endblock %}
 
   <!-- Default Meta Tags -->
   <meta name="description"
-    content="{% block meta_description %}Welcome to Snowsune.net! Vixi's website for projects, tools, comics, and more!{% endblock %}" />
+    content="{% block meta_description %}Welcome to KitsuneRobotics! Personal site for projects, tools, blog, and store!{% endblock %}" />
   <meta name="keywords"
-    content="{% block meta_keywords %}Snowsune, Vixi, Vixi Argorrok, Rhettan, Alice Prairie, projects, blog, tools, comics, furry, art, webcomic, discord, server, hangout, community, furry art, digital art, character art, commission, commission organizer, furry community, online tools, web development, creative projects{% endblock %}" />
+    content="{% block meta_keywords %}KitsuneRobotics, projects, blog, tools, store, robotics, engineering, personal site, online tools, web development, creative projects{% endblock %}" />
   <meta name="author" content="Vixi" />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="{% block canonical_url %}https://snowsune.net{% endblock %}" />
+  <link rel="canonical" href="{% block canonical_url %}https://kitsunerobotics.com{% endblock %}" />
 
   <!-- Additional SEO Meta Tags -->
   <meta name="language" content="en" />
@@ -43,30 +43,29 @@
   <meta name="category" content="{% block meta_category %}Art, Comics, Tools, Community{% endblock %}" />
 
   <!-- Open Graph / Discord Embed -->
-  <meta property="og:title" content="{% block og_title %}Snowsune.net{% endblock %}" />
+  <meta property="og:title" content="{% block og_title %}KitsuneRobotics{% endblock %}" />
   <meta property="og:description"
-    content="{% block og_description %}Vixi's website for projects, tools, comics, and more!{% endblock %}" />
+    content="{% block og_description %}Personal site for projects, tools, blog, and store!{% endblock %}" />
   <meta property="og:image"
     content="{% block og_image %}{% static 'placeholders/placeholder_wide.png' %}{% endblock %}" />
-  <meta property="og:url" content="{% block og_url %}https://snowsune.net{% endblock %}" />
+  <meta property="og:url" content="{% block og_url %}https://kitsunerobotics.com{% endblock %}" />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Snowsune.net" />
+  <meta property="og:site_name" content="KitsuneRobotics" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt"
-    content="{% block og_image_alt %}Snowsune.net - Vixi's personal website{% endblock %}" />
+  <meta property="og:image:alt" content="{% block og_image_alt %}KitsuneRobotics - Personal website{% endblock %}" />
 
   <!-- Twitter Card (not because I like twitter, only for compat in apps that accept the summary_large) -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="{% block twitter_title %}Snowsune.net{% endblock %}" />
+  <meta name="twitter:title" content="{% block twitter_title %}KitsuneRobotics{% endblock %}" />
   <meta name="twitter:description"
-    content="{% block twitter_description %}Vixi's website for projects, tools and more!{% endblock %}" />
+    content="{% block twitter_description %}Personal site for projects, tools, blog, and store!{% endblock %}" />
   <meta name="twitter:image"
     content="{% block twitter_image %}{% static 'placeholders/placeholder_wide.png' %}{% endblock %}" />
   <meta name="twitter:image:alt"
-    content="{% block twitter_image_alt %}Snowsune.net - Vixi's personal website{% endblock %}" />
-  <meta name="twitter:site" content="@snowsune" />
+    content="{% block twitter_image_alt %}KitsuneRobotics - Personal website{% endblock %}" />
+  <meta name="twitter:site" content="@kitsunerobotics" />
   <meta name="twitter:creator" content="@vixi" />
 
   <!-- DuckDuckGo specific meta tags -->
@@ -94,29 +93,24 @@
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "Snowsune.net",
-    "description": "{% block schema_description %}Vixi's website for projects, tools, comics, and more!{% endblock %}",
-    "url": "https://snowsune.net",
+    "name": "KitsuneRobotics",
+    "description": "{% block schema_description %}Personal site for projects, tools, blog, and store!{% endblock %}",
+    "url": "https://kitsunerobotics.com",
     "author": {
       "@type": "Person",
-      "name": "Vixi",
-      "alternateName": "Vixi Argorrok"
+      "name": "KitsuneRobotics"
     },
     "publisher": {
       "@type": "Organization",
-      "name": "Snowsune.net"
+      "name": "KitsuneRobotics"
     },
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://snowsune.net/search?q={search_term_string}",
+      "target": "https://kitsunerobotics.com/search?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   }
   </script>
-
-  <!-- Other -->
-  <link rel="stylesheet" href="https://furriesofnewengland.org/css/onionring.css" />
-  <!-- Required for FONE <3 -->
 </head>
 
 <body class="{% if user.is_authenticated %}user-authenticated{% else %}user-anonymous{% endif %}">
@@ -124,7 +118,7 @@
     <div class="header-left">
       <div class="logo">
         <img src="{% if debug %}{% static 'logos/devlogo.png' %}{% else %}{% static 'logos/logo.png' %}{% endif %}"
-          alt="Snowsune Logo" />
+          alt="KitsuneRobotics Logo" />
         <div class="live-stats">
           <a href="{% url 'user-gallery' %}" class="stat-box-link">
             <span class="tile stat-box" title="Users online! (Last 15 Minutes)">👥 <span
@@ -144,20 +138,15 @@
           <a href="{% url 'home' %}">Home</a>
           <a href="{% url 'tools' %}">Apps/Tools</a>
           <a href="{% url 'blog:blog_list' %}">Blog</a>
-          <a href="{% url 'comics:comic_home' %}">Webcomic</a>
+          <a href="{% url 'store:store_list' %}">Store</a>
         </div>
         <div class="nav-mobile-links" id="nav-mobile-links">
           <a href="{% url 'home' %}">Home</a>
           <a href="{% url 'tools' %}">Apps/Tools</a>
           <a href="{% url 'blog:blog_list' %}">Blog</a>
-          <a href="{% url 'comics:comic_home' %}">Webcomic</a>
+          <a href="{% url 'store:store_list' %}">Store</a>
         </div>
       </nav>
-
-      <!-- Quotes Scroller -->
-      <div id="quotes-scroller" class="quotes-container">
-        <span>Loading quotes...</span>
-      </div>
     </div>
     <div class="header-right">
       <div class="login">
@@ -199,15 +188,9 @@
         <!-- TODO: Change me to a proper about page later -->
         <li><a href="{% url 'tools' %}">Tools</a></li>
         <li><a href="{% url 'blog:blog_list' %}">Blog</a></li>
-        <li><a href="{% url 'comics:comic_home' %}">Webcomic</a></li>
+        <li><a href="{% url 'store:store_list' %}">Store</a></li>
       </ul>
       {% block sidebar %} {% endblock %}
-
-      <!-- This adds us to the FONE ring! -->
-      <div id="fone-ring">
-        <script type="text/javascript" src="https://furriesofnewengland.org/js/onionring-variables.js"></script>
-        <script type="text/javascript" src="https://furriesofnewengland.org/js/onionring-widget.js"></script>
-      </div>
     </div>
   </div>
 
@@ -215,23 +198,13 @@
     <div class="footer-content">
       <div class="footer-main">
         <p>
-          &copy; {{ year }} snowsune.net,
-          <a href="https://github.com/snowsune/site/commits/{{ version }}">Version {{ version }}</a>
+          &copy; {{ year }} kitsunerobotics.com,
+          <a href="https://github.com/KitsuneRobotics/site/commits/{{ version }}">Version {{ version }}</a>
           • Today's visits: <span id="page-views-count">-</span> • Today's unique visitors: <span
-            id="unique-visitors-count">-</span> • Art by
-          <a href="https://mothwingart.carrd.co/">Mothwing</a>,
-          <a href="https://www.furaffinity.net/user/tailster13">Tailster</a> and others! • If you think my site is
-          helpful consider
-          <a href="{{ ko_fi_url }}">Supporting me!</a>
+            id="unique-visitors-count">-</span>
         </p>
       </div>
 
-      <div class="footer-links">
-        <a href="{% url 'thank_you' %}" class="footer-credit-link">
-          <span class="footer-credit-icon">💝</span>
-          Credits & Thank You
-        </a>
-      </div>
     </div>
   </footer>
 
@@ -278,8 +251,6 @@
   <!-- Centralized Notification System (WIP) -->
   <script src="{% static 'notifications/js/notifications.js' %}"></script>
 
-  <!-- Quotes Scroller -->
-  <script src="{% static 'quotes/js/quotes-scroller.js' %}"></script>
 
   <!-- Live Stats Script -->
   <script src="{% static 'js/live-stats.js' %}"></script>

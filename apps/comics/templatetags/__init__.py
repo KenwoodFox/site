@@ -1,1 +1,0 @@
-# Comic app template tags

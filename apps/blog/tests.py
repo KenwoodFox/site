@@ -156,7 +156,7 @@ class BlogModelsTest(TestCase):
     def test_comment_webhook_on_creation(self, mock_webhook):
         """Test that moderator webhook is sent when an anonymous comment is created"""
         # Create a site setting for the moderator webhook
-        from snowsune.models import SiteSetting
+        from kitsunerobotics.models import SiteSetting
 
         SiteSetting.objects.create(
             key="moderator_webhook", value="https://example.com/webhook"
@@ -190,7 +190,7 @@ class BlogModelsTest(TestCase):
     def test_authenticated_user_comment_webhook(self, mock_webhook):
         """Test that blogpost webhook is sent when an authenticated user comment is created"""
         # Create site settings for both webhooks
-        from snowsune.models import SiteSetting
+        from kitsunerobotics.models import SiteSetting
 
         SiteSetting.objects.create(
             key="blogpost_webhook", value="https://example.com/blogpost-webhook"
@@ -246,7 +246,7 @@ class BlogModelsTest(TestCase):
     def test_authenticated_user_comment_empty_webhook_setting(self, mock_webhook):
         """Test that no webhook is sent when blogpost_webhook setting is empty"""
         # Create a site setting with empty value
-        from snowsune.models import SiteSetting
+        from kitsunerobotics.models import SiteSetting
 
         SiteSetting.objects.create(key="blogpost_webhook", value="")
 
@@ -280,7 +280,7 @@ class BlogModelsTest(TestCase):
     def test_comment_webhook_empty_setting(self, mock_webhook):
         """Test that no webhook is sent when moderator_webhook setting is empty"""
         # Create a site setting with empty value
-        from snowsune.models import SiteSetting
+        from kitsunerobotics.models import SiteSetting
 
         SiteSetting.objects.create(key="moderator_webhook", value="")
 
@@ -299,7 +299,7 @@ class BlogModelsTest(TestCase):
     def test_comment_webhook_only_on_new_comment(self, mock_webhook):
         """Test that webhook is only sent for new comments, not updates"""
         # Create a site setting for the moderator webhook
-        from snowsune.models import SiteSetting
+        from kitsunerobotics.models import SiteSetting
 
         SiteSetting.objects.create(
             key="moderator_webhook", value="https://example.com/webhook"
@@ -327,7 +327,7 @@ class BlogModelsTest(TestCase):
     def test_comment_webhook_on_approval(self, mock_webhook):
         """Test that blogpost webhook is sent when a pending comment is approved"""
         # Create site settings for both webhooks
-        from snowsune.models import SiteSetting
+        from kitsunerobotics.models import SiteSetting
 
         SiteSetting.objects.create(
             key="moderator_webhook", value="https://example.com/moderator-webhook"

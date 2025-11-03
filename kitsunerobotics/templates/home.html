@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}KitsuneRobotics - Personal Site for Projects, Tools & Store{% endblock %}
+
+{% block meta_description %}KitsuneRobotics - Projects, Tools, Blog, Store and more!{% endblock %}
+
+{% block meta_keywords %}KitsuneRobotics, projects, tools, blog, store, robotics, engineering, personal site, online
+tools, web development, creative projects{% endblock %}
+
+{% block og_title %}KitsuneRobotics - Personal Site for Projects, Tools & Store{% endblock %}
+
+{% block og_description %}KitsuneRobotics - Projects, Tools, Blog, Store and more!{% endblock %}
+
+{% block og_image %}{% static 'placeholders/home_preview.png' %}{% endblock %}
+
+{% block twitter_title %}KitsuneRobotics - Personal Site for Projects, Tools & Store{% endblock %}
+
+{% block twitter_description %}KitsuneRobotics - Projects, Tools, Blog, Store and more!{% endblock %}
+
+{% block twitter_image %}{% static 'placeholders/home_preview.png' %}{% endblock %}
+{% block og_image_alt %}KitsuneRobotics - Personal Site for Projects, Tools & Store{% endblock %}
+{% block twitter_image_alt %}KitsuneRobotics - Personal Site for Projects, Tools & Store{% endblock %}
+{% block meta_subject %}Robotics, Engineering, Projects, Tools, Store{% endblock %}
+{% block meta_category %}Robotics, Engineering, Tools, Store{% endblock %}
+{% block schema_description %}Personal site for robotics projects, tools, blog, and store{% endblock %}
+
+
+{% block extra_head %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "KitsuneRobotics",
+  "description": "Personal site for projects, tools, blog, and store",
+  "url": "https://kitsunerobotics.com",
+  "author": {
+    "@type": "Person",
+    "name": "KitsuneRobotics",
+    "url": "https://kitsunerobotics.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "KitsuneRobotics",
+    "url": "https://kitsunerobotics.com"
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://kitsunerobotics.com/search?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  },
+  "sameAs": [
+    "{{ discord_invite }}"
+  ]
+}
+</script>
+
+{% endblock %}
+
+{% block content %}
+<header class="page-header">
+    <h1>Welcome to KitsuneRobotics!</h1>
+    <p class="lead">Personal site for projects, tools, blog, and store!
+    </p>
+</header>
+
+<section class="intro-section">
+    <p>Hey there! Welcome to my personal site. I work on robotics projects, build tools, write blog posts, and have a
+        store for various items.
+    </p>
+</section>
+
+<!-- Latest Content Section -->
+<div class="latest-content-grid">
+
+    <!-- Latest Blog Posts Section -->
+    {% if latest_posts %}
+    <section class="latest-blog-posts">
+        <h2>Read the blog!</h2>
+        {% for post in latest_posts %}
+        <article class="blog-preview">
+            {% if post.featured_image %}
+            <div class="blog-preview-image">
+                <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" loading="lazy">
+            </div>
+            {% endif %}
+            <div class="blog-preview-content">
+                <h3><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3>
+                <div class="blog-meta">
+                    <span class="blog-date">{{ post.display_date|date:"F j, Y" }}</span>
+                    {% if post.tags.exists %}
+                    <span class="blog-tags">
+                        {% for tag in post.tags.all %}
+                        <span class="tag">{{ tag.name }}</span>
+                        {% endfor %}
+                    </span>
+                    {% endif %}
+                </div>
+                {% if post.excerpt %}
+                <p class="blog-excerpt">{{ post.excerpt }}</p>
+                {% endif %}
+                <a href="{{ post.get_absolute_url }}" class="read-more">Read More →</a>
+            </div>
+        </article>
+        {% if not forloop.last %}
+        <hr class="blog-post-divider">
+        {% endif %}
+        {% endfor %}
+        <p class="blog-section-footer">
+            <a href="{% url 'blog:blog_list' %}">View all blog posts →</a>
+        </p>
+    </section>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block sidebar %}
+<h2>Tools</h2>
+<ul>
+    <li><a href="{% url 'tools' %}">Apps & Tools</a></li>
+</ul>
+
+{% if latest_posts %}
+<h2>Recent Posts</h2>
+<ul>
+    {% for post in latest_posts %}
+    <li><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}
