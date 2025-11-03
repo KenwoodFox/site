@@ -71,7 +71,7 @@ def send_new_user_webhook(user):
 class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = CustomUser
-        fields = ["email", "bio", "profile_picture", "fa_url", "flist_url"]
+        fields = ["email", "bio", "profile_picture"]
         widgets = {
             "bio": forms.Textarea(attrs={"rows": 4, "cols": 50}),
             "email": forms.EmailInput(attrs={"type": "email"}),
@@ -97,18 +97,7 @@ def register_view(request):
 @login_required
 def edit_account_view(request):
     if request.method == "POST":
-        if "disconnect_discord" in request.POST:
-            # Disconnect Discord account
-            request.user.discord_id = None
-            request.user.discord_username = None
-            request.user.discord_access_token = None
-            request.user.discord_refresh_token = None
-            request.user.discord_token_expires = None
-            request.user.save()
-            messages.success(request, "Discord account disconnected successfully.")
-            return redirect("account-edit")
-
-        elif "set_email_and_verify" in request.POST:
+        if "set_email_and_verify" in request.POST:
             # So, if you're just setting your email
             # the first time (from the popup box) this
             # should kinda automate the, get email, send it
@@ -167,7 +156,6 @@ def edit_account_view(request):
 
     context = {
         "user": request.user,
-        "has_discord": bool(request.user.discord_access_token),
         "form": form,
     }
     return render(request, "users/edit.html", context)

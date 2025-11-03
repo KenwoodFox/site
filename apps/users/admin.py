@@ -7,15 +7,11 @@ from .models import CustomUser
 class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
         (
-            "External/Profile Info",
+            "Profile Info",
             {
                 "fields": (
                     "profile_picture",
-                    "fa_url",
-                    "flist_url",
                     "bio",
-                    "discord_id",
-                    "size_diff_image",
                     "badges",
                 )
             },

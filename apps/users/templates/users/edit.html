@@ -211,31 +211,6 @@
 </div>
 
 <div class="account-section">
-    <h2>Discord Connection</h2>
-    {% if has_discord %}
-    <p><strong>Status:</strong> Connected</p>
-    <p><strong>Discord Username:</strong> {{ user.discord_username }}</p>
-    <p><strong>Discord ID:</strong> {{ user.discord_id }}</p>
-
-    <form method="post" style="display: inline;"
-        onsubmit="return confirm('Are you sure you want to disconnect your Discord account?')">
-        {% csrf_token %}
-        <button type="submit" name="disconnect_discord" class="btn btn-danger">
-            Disconnect Discord Account
-        </button>
-    </form>
-
-    <p><small>Disconnecting will remove your access to Fops Bot features.</small></p>
-    {% else %}
-    <p><strong>Status:</strong> Not connected</p>
-    <p>Connect your Discord account to access Fops Bot features.</p>
-    <a href="{% url 'bot_manager_discord_login' %}" class="btn btn-primary">
-        Connect Discord Account
-    </a>
-    {% endif %}
-</div>
-
-<div class="account-section">
     <h2>Email Verification</h2>
     {% if user.email_verified %}
     <p style="color: #28a745; font-weight: bold;">✓ Your email is verified!</p>
@@ -290,22 +265,6 @@
             {{ form.profile_picture }}
             {% if form.profile_picture.errors %}
             <div class="error">{{ form.profile_picture.errors }}</div>
-            {% endif %}
-        </div>
-
-        <div class="form-group">
-            <label for="{{ form.fa_url.id_for_label }}">FurAffinity URL:</label>
-            {{ form.fa_url }}
-            {% if form.fa_url.errors %}
-            <div class="error">{{ form.fa_url.errors }}</div>
-            {% endif %}
-        </div>
-
-        <div class="form-group">
-            <label for="{{ form.flist_url.id_for_label }}">F-List URL:</label>
-            {{ form.flist_url }}
-            {% if form.flist_url.errors %}
-            <div class="error">{{ form.flist_url.errors }}</div>
             {% endif %}
         </div>
 

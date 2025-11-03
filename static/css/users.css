@@ -221,12 +221,6 @@
     font-family: monospace;
 }
 
-.size-diff-image {
-    max-width: 100%;
-    border-radius: 4px;
-    border: 1px solid var(--border-color);
-}
-
 .edit-profile-btn {
     display: inline-block;
     background: var(--primary-color);

@@ -62,36 +62,6 @@ Snowsune.net{% endblock %}
         </div>
     </div>
 
-    <!-- External Links -->
-    {% if profile_user.fa_url or profile_user.flist_url %}
-    <div class="profile-section">
-        <h2>Links & Socials</h2>
-        <div class="profile-links">
-            {% if profile_user.fa_url %}
-            <div class="profile-link-card">
-                <h3>🎨 FurAffinity</h3>
-                <a href="{{ profile_user.fa_url }}" target="_blank" rel="noopener">{{ profile_user.fa_url }}</a>
-            </div>
-            {% endif %}
-
-            {% if profile_user.flist_url %}
-            <div class="profile-link-card">
-                <h3>📋 F-List</h3>
-                <a href="{{ profile_user.flist_url }}" target="_blank" rel="noopener">{{ profile_user.flist_url }}</a>
-            </div>
-            {% endif %}
-        </div>
-    </div>
-    {% endif %}
-
-    <!-- Size Diff Image -->
-    {% if profile_user.size_diff_image %}
-    <div class="profile-section">
-        <h2>Size Comparison</h2>
-        <img src="{{ profile_user.size_diff_image.url }}" alt="Size comparison" class="size-diff-image" />
-    </div>
-    {% endif %}
-
     <!-- Back to Gallery -->
     <div style="text-align: center; margin-top: 2rem;">
         <a href="{% url 'user-gallery' %}" class="edit-profile-btn">← Back to Gallery</a>

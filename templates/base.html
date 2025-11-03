@@ -151,11 +151,6 @@
     <div class="header-right">
       <div class="login">
         <button class="nav-hamburger" id="nav-hamburger" aria-label="Open navigation">&#9776;</button>
-        {% if discord_invite %}
-        <a href="{{ discord_invite }}" target="_blank" rel="noopener" class="discord-navbar-btn">
-          <span class="discord-navbar-icon">💬</span> Join my Discord!
-        </a>
-        {% endif %}
         {% include "users/widget.html" %}
       </div>
     </div>

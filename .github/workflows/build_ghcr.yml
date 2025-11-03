@@ -22,10 +22,8 @@ jobs:
         test_target:
           - "apps.blog.tests"
           - "apps.users.tests"
-          - "apps.commorganizer.tests"
-          - "apps.comics.tests"
-          - "apps.characters.tests"
-          - "snowsune.tests"
+          - "apps.store.tests"
+          - "kitsunerobotics.tests"
           - ""  # Empty string runs all tests (default Django behavior)
 
     steps:
