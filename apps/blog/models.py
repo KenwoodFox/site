@@ -118,8 +118,11 @@ class BlogPost(models.Model):
             if not webhook_url:
                 return
 
-            # Import here to avoid circular imports
-            from apps.commorganizer.utils import send_discord_webhook
+            # Try to import webhook function, skip if not available
+            try:
+                from apps.commorganizer.utils import send_discord_webhook
+            except ImportError:
+                return  # Webhook functionality not available
 
             # Create notification message with Discord markdown
             message = f"📝 **New Blog Post Published!**\n\n"
@@ -325,8 +328,11 @@ class Comment(models.Model):
             if not webhook_url:
                 return
 
-            # Import here to avoid circular imports
-            from apps.commorganizer.utils import send_discord_webhook
+            # Try to import webhook function, skip if not available
+            try:
+                from apps.commorganizer.utils import send_discord_webhook
+            except ImportError:
+                return  # Webhook functionality not available
 
             # Create notification message
             message = f"New comment awaiting moderation on [{self.post.title}](<{settings.SITE_URL}{self.post.get_absolute_url()}>) by {self.get_display_name()}:\n"
@@ -354,8 +360,11 @@ class Comment(models.Model):
             if not webhook_url:
                 return
 
-            # Import here to avoid circular imports
-            from apps.commorganizer.utils import send_discord_webhook
+            # Try to import webhook function, skip if not available
+            try:
+                from apps.commorganizer.utils import send_discord_webhook
+            except ImportError:
+                return  # Webhook functionality not available
 
             # Only format username as a link if the user is authenticated
             if self.user and self.user.is_authenticated:
