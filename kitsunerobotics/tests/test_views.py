@@ -13,27 +13,17 @@ class MainPageTests(TestCase):
         response = self.client.get(reverse("tools"))
         self.assertEqual(response.status_code, 200)
 
-    def test_characters_page_loads(self):
-        """Test that the characters page loads successfully."""
-        response = self.client.get(reverse("character-list"))
-        self.assertEqual(response.status_code, 200)
-
     def test_blog_page_loads(self):
         """Test that the blog page loads successfully."""
         response = self.client.get(reverse("blog:blog_list"))
         self.assertEqual(response.status_code, 200)
 
-    def test_comics_page_loads(self):
-        """Test that the comics page redirects to the latest comic successfully."""
-        response = self.client.get(reverse("comics:comic_home"))
-        self.assertEqual(response.status_code, 302)  # Redirect status code
+    def test_store_page_loads(self):
+        """Test that the store page loads successfully."""
+        response = self.client.get(reverse("store:store_list"))
+        self.assertEqual(response.status_code, 200)
 
-    def test_gallery_page_loads(self):
-        """Test that the gallery page loads successfully."""
-        # TODO: There is no gallery lol, skip for now :P
-        try:
-            response = self.client.get(reverse("gallery"))
-            self.assertEqual(response.status_code, 200)
-        except:
-            # If gallery URL doesn't exist yet, skip this test
-            self.skipTest("Gallery URL not implemented yet")
+    def test_user_gallery_page_loads(self):
+        """Test that the user gallery page loads successfully."""
+        response = self.client.get(reverse("user-gallery"))
+        self.assertEqual(response.status_code, 200)
