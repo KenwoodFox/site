@@ -1,18 +1,18 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}{{ profile_user.first_name|default:profile_user.username }} - Snowsune.net{% endblock %}
+{% block title %}{{ profile_user.first_name|default:profile_user.username }} - KitsuneRobotics{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/users.css' %}">
 {% endblock %}
 
-{% block meta_description %}{{ profile_user.first_name|default:profile_user.username }}'s profile on Snowsune.net.
+{% block meta_description %}{{ profile_user.first_name|default:profile_user.username }}'s profile on KitsuneRobotics.
 {% if profile_user.bio %}{{ profile_user.bio|truncatewords:30 }}{% endif %}{% endblock %}
 
-{% block og_title %}{{ profile_user.first_name|default:profile_user.username }} - Snowsune.net{% endblock %}
+{% block og_title %}{{ profile_user.first_name|default:profile_user.username }} - KitsuneRobotics{% endblock %}
 {% block og_description %}View {{ profile_user.first_name|default:profile_user.username }}'s profile on
-Snowsune.net{% endblock %}
+KitsuneRobotics{% endblock %}
 {% if profile_user.get_profile_picture_url %}
 {% block og_image %}{{ profile_user.get_profile_picture_url }}{% endblock %}
 {% endif %}

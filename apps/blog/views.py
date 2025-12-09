@@ -390,9 +390,9 @@ def upload_image(request):
 
 
 class BlogRSSFeed(Feed):
-    title = "Snowsune Blog"
+    title = "KitsuneRobotics Blog"
     link = "/blog/"
-    description = "Snowsune.net RSS blog feed."
+    description = "KitsuneRobotics RSS blog feed."
     feed_type = Rss201rev2Feed
 
     def items(self):
