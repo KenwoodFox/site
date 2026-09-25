@@ -12,5 +12,11 @@ echo "0 */6 * * * /app/manage.py ensure_sitemap >> /var/log/cron.log 2>&1" | cro
 # Start cron daemon
 service cron start
 
-# Start the application
-gunicorn kitsunerobotics.wsgi:application --bind 0.0.0.0:80 --workers 4
+gunicorn kitsunerobotics.wsgi:application \
+    --bind 0.0.0.0:80 \
+    --workers 2 \
+    --worker-class gthread \
+    --threads 4 \
+    --timeout 120 \
+    --graceful-timeout 30 \
+    --keep-alive 5
