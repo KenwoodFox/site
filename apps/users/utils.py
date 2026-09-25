@@ -53,7 +53,7 @@ def send_verification_email(user):
         subject = f"Verify your email address on {site_domain}"
 
         # You could make this a proper template later
-        message = f"""Heyy {user.first_name or user.username}!
+        message = f"""Hey {user.first_name or user.username}!
 
 Use the following link to verify your email address:
 
@@ -62,7 +62,7 @@ Use the following link to verify your email address:
 If you didn't request this verification, you can safely ignore this email.
 
 Thanks!
-- Vixi <3
+- Joe
 """
 
         send_mail(
