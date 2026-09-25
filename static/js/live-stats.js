@@ -5,7 +5,7 @@ function updateStats() {
     // Check if we have recent cached data
     const cached = localStorage.getItem('statsCache');
     if (cached) {
-        const { activeUsers, pageViews, uniqueVisitors, serverOffset, koFiProgress, timestamp } = JSON.parse(cached);
+        const { activeUsers, pageViews, uniqueVisitors, serverOffset, timestamp } = JSON.parse(cached);
         const age = now - timestamp;
 
         // Use cached values if less than 30 seconds old
@@ -18,7 +18,6 @@ function updateStats() {
                 document.getElementById('unique-visitors-count').textContent = uniqueVisitors;
             }
             document.getElementById('server-offset').textContent = serverOffset;
-            document.getElementById('ko-fi-progress').textContent = koFiProgress;
             return;
         }
     }
@@ -34,7 +33,6 @@ function updateStats() {
             const pageViews = data.page_views || 0;
             const uniqueVisitors = data.unique_visitors || 0;
             const serverOffset = data.server_offset || '?';
-            const koFiProgress = data.ko_fi_progress || '?';
 
             // Update the DOM
             document.getElementById('active-users-count').textContent = activeUsers;
@@ -45,7 +43,6 @@ function updateStats() {
                 document.getElementById('unique-visitors-count').textContent = uniqueVisitors;
             }
             document.getElementById('server-offset').textContent = serverOffset;
-            document.getElementById('ko-fi-progress').textContent = koFiProgress;
 
             // Cache the results
             localStorage.setItem('statsCache', JSON.stringify({
@@ -53,7 +50,6 @@ function updateStats() {
                 pageViews: pageViews,
                 uniqueVisitors: uniqueVisitors,
                 serverOffset: serverOffset,
-                koFiProgress: koFiProgress,
                 timestamp: now
             }));
         })
@@ -62,7 +58,7 @@ function updateStats() {
             // Show cached values if available
             const cached = localStorage.getItem('statsCache');
             if (cached) {
-                const { activeUsers, pageViews, uniqueVisitors, serverOffset, koFiProgress } = JSON.parse(cached);
+                const { activeUsers, pageViews, uniqueVisitors, serverOffset } = JSON.parse(cached);
                 document.getElementById('active-users-count').textContent = activeUsers;
                 if (document.getElementById('page-views-count')) {
                     document.getElementById('page-views-count').textContent = pageViews;
@@ -71,7 +67,6 @@ function updateStats() {
                     document.getElementById('unique-visitors-count').textContent = uniqueVisitors;
                 }
                 document.getElementById('server-offset').textContent = serverOffset;
-                document.getElementById('ko-fi-progress').textContent = koFiProgress;
             }
         });
 }

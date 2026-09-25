@@ -180,4 +180,4 @@ To add new notification types or features:
 
 ## License
 
-This notification system is part of the KitsuneRobotics site and follows the same license terms. 
+This notification system is part of the KitsuneHosting site and follows the same license terms. 

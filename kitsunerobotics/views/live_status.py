@@ -14,20 +14,6 @@ from kitsunerobotics.models import SiteSetting
 logger = logging.getLogger(__name__)
 
 
-def get_ko_fi_progress():
-    """
-    Get Ko-fi progress from SiteSetting
-    """
-    ko_fi_setting = SiteSetting.objects.filter(key="KO_FI_PROGRESS").first()
-    if ko_fi_setting:
-        try:
-            return f"{float(ko_fi_setting.value):.1f}"
-        except (ValueError, TypeError):
-            return "?"
-    else:
-        return "?"
-
-
 def get_cloudflare_analytics():
     """
     Get analytics data from Cloudflare GraphQL Analytics API
@@ -246,9 +232,6 @@ def live_status_view(request):
         except Exception:
             server_offset = "Offline"
 
-    # Get Ko-fi progress
-    ko_fi_progress = get_ko_fi_progress()
-
     # Create response with low TTL headers to prevent Cloudflare caching
     response = JsonResponse(
         {
@@ -256,7 +239,6 @@ def live_status_view(request):
             "page_views": final_stats["page_views"],
             "unique_visitors": final_stats["unique_visitors"],
             "server_offset": server_offset,
-            "ko_fi_progress": ko_fi_progress,
             "timestamp": timezone.now().isoformat(),
             "cached": True,
             "source": "cloudflare_analytics",

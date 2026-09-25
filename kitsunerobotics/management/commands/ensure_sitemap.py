@@ -30,7 +30,7 @@ class Command(BaseCommand):
 
         try:
             # Hardcode domain since we don't have Sites framework
-            domain = "kitsunerobotics.com"
+            domain = "kitsunehosting.net"
 
             # Build sitemap content
             sitemap_content = f"""<?xml version="1.0" encoding="UTF-8"?>

@@ -72,3 +72,26 @@ class BlogImage(models.Model):
         if self.is_image:
             return f"![{name}]({self.image.url})"
         return f"[{name}]({self.image.url})"
+
+
+class Comment(models.Model):
+    article = models.ForeignKey(
+        "siteblog.Article", on_delete=models.CASCADE, related_name="comments"
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="article_comments",
+    )
+    author_name = models.CharField(max_length=150)
+    body = models.TextField()
+    approved = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["created_at"]
+
+    def __str__(self):
+        return f"{self.author_name} on {self.article}"

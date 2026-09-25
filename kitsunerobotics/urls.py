@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.conf import settings
 from django.conf.urls.static import static
 
-from kitsunerobotics.views.blog import ArticleListView
+from kitsunerobotics.views.blog import ArticleDetailView, ArticleListView, post_comment
 from kitsunerobotics.views.editor import (
     ArticleCreateView,
     ArticleUpdateView,
@@ -39,6 +39,8 @@ urlpatterns = [
     path("blog/write/", ArticleCreateView.as_view(), name="article_create"),
     path("blog/write/<slug:slug>/", ArticleUpdateView.as_view(), name="article_edit"),
     path("blog/upload-chunk/", upload_chunk, name="upload_chunk"),
+    path("blog/<slug:slug>/comment/", post_comment, name="post_comment"),
+    path("blog/<slug:slug>/", ArticleDetailView.as_view(), name="article_detail"),
     path("blog/", include("siteblog.urls")),
     path("store/", include("apps.store.urls")),
     path("users/", include("apps.users.urls")),

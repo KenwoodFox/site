@@ -5,11 +5,46 @@
 
 {% block content %}
 <h1>{{ article.title }}</h1>
+{% if article.status != "published" %}
+<p>Draft. Only staff can see this.</p>
+{% endif %}
 <p>{{ article.published_on|date:"F j, Y" }}</p>
 {% if user.is_staff %}
 <p><a href="{% url 'article_edit' article.slug %}">Edit this post</a></p>
 {% endif %}
 <div>{{ article.article_body|render_markdown }}</div>
+
+<h2 id="comments">Comments</h2>
+{% for comment in comments %}
+<p><strong>{{ comment.author_name }}</strong> {{ comment.created_at|date:"F j, Y" }}</p>
+<p>{{ comment.body|linebreaksbr }}</p>
+<hr>
+{% empty %}
+<p>No comments yet.</p>
+{% endfor %}
+
+{% if messages %}
+{% for message in messages %}
+<p class="comment-note">{{ message }}</p>
+{% endfor %}
+{% endif %}
+
+<form method="post" action="{% url 'post_comment' article.slug %}">
+    {% csrf_token %}
+    {{ comment_form.body.label_tag }}
+    {{ comment_form.body }}
+    {{ comment_form.body.errors }}
+    <p>
+        {% if user.is_authenticated and user.email_verified %}
+        Commenting as {{ user.username }}.
+        {% elif user.is_authenticated %}
+        Email isn't verified, so this posts as Unverified after I approve it.
+        {% else %}
+        Not logged in, so this posts as Anonymous after I approve it.
+        {% endif %}
+    </p>
+    <button type="submit">Post comment</button>
+</form>
 {% endblock %}
 
 {% block sidebar %}
@@ -17,6 +52,7 @@
 <h2>This post</h2>
 <ul>
     <li><a href="{% url 'article_edit' article.slug %}">Edit in the markdown editor</a></li>
+    <li><a href="{% url 'admin:kitsunerobotics_comment_changelist' %}?approved__exact=0">Pending comments</a></li>
 </ul>
 {% endif %}
 {% endblock %}

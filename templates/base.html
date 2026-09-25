@@ -12,18 +12,18 @@
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{% block title %}KitsuneRobotics{% endblock %}</title>
+  <title>{% block title %}KitsuneHosting{% endblock %}</title>
 
   {% block header %}{% endblock %}
 
   <!-- Default Meta Tags -->
   <meta name="description"
-    content="{% block meta_description %}Welcome to KitsuneRobotics! Personal site for projects, tools, blog, and store!{% endblock %}" />
+    content="{% block meta_description %}Welcome to KitsuneHosting! Personal site for projects, tools, blog, and store!{% endblock %}" />
   <meta name="keywords"
-    content="{% block meta_keywords %}KitsuneRobotics, projects, blog, tools, store, robotics, engineering, personal site, online tools, web development, creative projects{% endblock %}" />
+    content="{% block meta_keywords %}KitsuneHosting, projects, blog, tools, store, robotics, engineering, personal site, online tools, web development, creative projects{% endblock %}" />
   <meta name="author" content="Vixi" />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="{% block canonical_url %}https://kitsunerobotics.com{% endblock %}" />
+  <link rel="canonical" href="{% block canonical_url %}https://kitsunehosting.net{% endblock %}" />
 
   <!-- Additional SEO Meta Tags -->
   <meta name="language" content="en" />
@@ -35,29 +35,29 @@
   <meta name="category" content="{% block meta_category %}Art, Comics, Tools, Community{% endblock %}" />
 
   <!-- Open Graph / Discord Embed -->
-  <meta property="og:title" content="{% block og_title %}KitsuneRobotics{% endblock %}" />
+  <meta property="og:title" content="{% block og_title %}KitsuneHosting{% endblock %}" />
   <meta property="og:description"
     content="{% block og_description %}Personal site for projects, tools, blog, and store!{% endblock %}" />
   <meta property="og:image"
     content="{% block og_image %}{% static 'placeholders/placeholder_wide.png' %}{% endblock %}" />
-  <meta property="og:url" content="{% block og_url %}https://kitsunerobotics.com{% endblock %}" />
+  <meta property="og:url" content="{% block og_url %}https://kitsunehosting.net{% endblock %}" />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="KitsuneRobotics" />
+  <meta property="og:site_name" content="KitsuneHosting" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="{% block og_image_alt %}KitsuneRobotics - Personal website{% endblock %}" />
+  <meta property="og:image:alt" content="{% block og_image_alt %}KitsuneHosting - Personal website{% endblock %}" />
 
   <!-- Twitter Card (not because I like twitter, only for compat in apps that accept the summary_large) -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="{% block twitter_title %}KitsuneRobotics{% endblock %}" />
+  <meta name="twitter:title" content="{% block twitter_title %}KitsuneHosting{% endblock %}" />
   <meta name="twitter:description"
     content="{% block twitter_description %}Personal site for projects, tools, blog, and store!{% endblock %}" />
   <meta name="twitter:image"
     content="{% block twitter_image %}{% static 'placeholders/placeholder_wide.png' %}{% endblock %}" />
   <meta name="twitter:image:alt"
-    content="{% block twitter_image_alt %}KitsuneRobotics - Personal website{% endblock %}" />
-  <meta name="twitter:site" content="@kitsunerobotics" />
+    content="{% block twitter_image_alt %}KitsuneHosting - Personal website{% endblock %}" />
+  <meta name="twitter:site" content="@kitsunehosting" />
   <meta name="twitter:creator" content="@vixi" />
 
   <!-- DuckDuckGo specific meta tags -->
@@ -81,11 +81,11 @@
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "KitsuneRobotics",
+    "name": "KitsuneHosting",
     "description": "{% block schema_description %}Personal site for projects, tools, blog, and store!{% endblock %}",
-    "url": "https://kitsunerobotics.com",
+    "url": "https://kitsunehosting.net",
     "author": {
-      "@type": "Person",
+      "@type": "Organization",
       "name": "KitsuneRobotics"
     },
     "publisher": {
@@ -94,7 +94,7 @@
     },
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://kitsunerobotics.com/search?q={search_term_string}",
+      "target": "https://kitsunehosting.net/search?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   }
@@ -111,7 +111,7 @@
     <div class="header-left">
       <div class="logo">
         <img src="{% if debug %}{% static 'logos/devlogo.png' %}{% else %}{% static 'logos/logo.png' %}{% endif %}"
-          alt="KitsuneRobotics Logo" />
+          alt="KitsuneHosting Logo" />
       </div>
       <div class="header-bar">
         <div class="live-stats">
@@ -176,7 +176,7 @@
     <div class="footer-content">
       <div class="footer-main">
         <p>
-          &copy; {{ year }} kitsunerobotics.com,
+          &copy; {{ year }} KitsuneRobotics,
           <a href="https://github.com/KitsuneRobotics/site/commits/{{ version }}">Version {{ version }}</a>
           • Today's visits: <span id="page-views-count">-</span> • Today's unique visitors: <span
             id="unique-visitors-count">-</span>

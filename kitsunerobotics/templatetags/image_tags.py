@@ -32,5 +32,5 @@ def social_preview_url_og(image_url, request=None):
             return f"{request.scheme}://{request.get_host()}{preview_path}"
         else:
             # Fallback to hardcoded domain
-            return f"https://kitsunerobotics.com{preview_path}"
+            return f"https://kitsunehosting.net{preview_path}"
     return None

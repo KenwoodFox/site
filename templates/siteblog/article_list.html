@@ -1,19 +1,19 @@
 {% extends "base.html" %}
 {% load markdown_tags %}
 
-{% block title %}Blog - KitsuneRobotics{% endblock %}
+{% block title %}Blog - KitsuneHosting{% endblock %}
 
 {% block content %}
 <h1>Blog</h1>
 {% if articles %}
 {% for article in articles %}
 <article>
-    <h2><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h2>
+    <h2><a href="{% url 'article_detail' article.slug %}">{{ article.title }}</a>{% if article.status != "published" %} (draft){% endif %}</h2>
     <p>{{ article.published_on|date:"F j, Y" }}</p>
     {% if article.article_body.excerpt %}
     <div>{{ article.article_body.excerpt|render_markdown }}</div>
     {% endif %}
-    <p><a href="{{ article.get_absolute_url }}">Read more</a></p>
+    <p><a href="{% url 'article_detail' article.slug %}">Read more</a></p>
 </article>
 {% endfor %}
 {% else %}

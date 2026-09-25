@@ -50,7 +50,7 @@ DEBUG = os.environ.get("DEBUG", "false").lower() == "true"
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
 
 # Site URL for webhooks and external links
-SITE_URL = os.getenv("SITE_URL", "https://kitsunerobotics.com")
+SITE_URL = os.getenv("SITE_URL", "https://kitsunehosting.net")
 
 # Required by django.contrib.sites and django-site-blog
 SITE_ID = 1
@@ -115,7 +115,6 @@ TEMPLATES = [
                 "kitsunerobotics.context_processors.debug_mode",
                 "kitsunerobotics.context_processors.expiry_links",
                 "kitsunerobotics.context_processors.discord_invite_link",  # TODO: Make generic!
-                "kitsunerobotics.context_processors.ko_fi_url",
                 "kitsunerobotics.context_processors.google_analytics_id",
                 "kitsunerobotics.context_processors.seasonal_css",
                 "apps.notifications.context_processors.notifications_processor",
@@ -236,7 +235,7 @@ else:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # Default email sender
-DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "noreply@kitsunerobotics.com")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "noreply@kitsunehosting.net")
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
 # If we're testing

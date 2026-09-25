@@ -44,21 +44,6 @@ def discord_invite_link(request):
     return {"discord_invite": invite.value if invite else ""}
 
 
-def ko_fi_url(request):
-    """Add Ko-fi URL to all template contexts"""
-    try:
-        ko_fi_setting = SiteSetting.objects.filter(key="KO_FI_URL").first()
-        ko_fi_url = (
-            ko_fi_setting.value
-            if ko_fi_setting
-            else "https://ko-fi.com/kitsunerobotics"
-        )
-    except:
-        ko_fi_url = "https://ko-fi.com/kitsunerobotics"
-
-    return {"ko_fi_url": ko_fi_url}
-
-
 def google_analytics_id(request):
     """Add Google Analytics tag to all template contexts"""
     try:

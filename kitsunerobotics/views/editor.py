@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponse, JsonResponse
+from django.urls import reverse
 from django.utils.text import slugify
 from django.views.decorators.http import require_http_methods, require_POST
 from django.views.generic import CreateView, UpdateView
@@ -56,7 +57,7 @@ class ArticleWriteView(StaffRequiredMixin):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return self.object.get_absolute_url()
+        return reverse("article_detail", args=[self.object.slug])
 
 
 class ArticleCreateView(ArticleWriteView, CreateView):
