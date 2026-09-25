@@ -15,7 +15,7 @@ class MainPageTests(TestCase):
 
     def test_blog_page_loads(self):
         """Test that the blog page loads successfully."""
-        response = self.client.get(reverse("blog:blog_list"))
+        response = self.client.get(reverse("blog_list"))
         self.assertEqual(response.status_code, 200)
 
     def test_store_page_loads(self):

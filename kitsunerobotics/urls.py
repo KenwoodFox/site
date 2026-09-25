@@ -6,6 +6,12 @@ from django.http import HttpResponse
 from django.conf import settings
 from django.conf.urls.static import static
 
+from kitsunerobotics.views.blog import ArticleListView
+from kitsunerobotics.views.editor import (
+    ArticleCreateView,
+    ArticleUpdateView,
+    upload_chunk,
+)
 from kitsunerobotics.views.home import HomeView
 from kitsunerobotics.views.projects import ProjectsView
 from kitsunerobotics.views.tools import ToolsView
@@ -29,7 +35,11 @@ urlpatterns = [
         "format_preview/<path:image_path>", format_preview_view, name="format_preview"
     ),
     # "app" urls
-    path("blog/", include("apps.blog.urls")),
+    path("blog/", ArticleListView.as_view(), name="blog_list"),
+    path("blog/write/", ArticleCreateView.as_view(), name="article_create"),
+    path("blog/write/<slug:slug>/", ArticleUpdateView.as_view(), name="article_edit"),
+    path("blog/upload-chunk/", upload_chunk, name="upload_chunk"),
+    path("blog/", include("siteblog.urls")),
     path("store/", include("apps.store.urls")),
     path("users/", include("apps.users.urls")),
     # SEO

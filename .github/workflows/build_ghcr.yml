@@ -20,7 +20,6 @@ jobs:
     strategy:
       matrix:
         test_target:
-          - "apps.blog.tests"
           - "apps.users.tests"
           - "apps.store.tests"
           - "kitsunerobotics.tests"

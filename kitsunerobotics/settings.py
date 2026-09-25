@@ -52,6 +52,9 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
 # Site URL for webhooks and external links
 SITE_URL = os.getenv("SITE_URL", "https://kitsunerobotics.com")
 
+# Required by django.contrib.sites and django-site-blog
+SITE_ID = 1
+
 # Application definition
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -60,12 +63,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
     # Main app
     "kitsunerobotics",
     # Custom apps
     "apps.users",  # Users app
-    "apps.blog",  # Blog app
     "apps.store",  # Store app
+    "siteblog",
     "apps.notifications",  # Centralized notification system
 ]
 

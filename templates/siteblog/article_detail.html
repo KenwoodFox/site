@@ -1,0 +1,22 @@
+{% extends "siteblog/base.html" %}
+{% load markdown_tags %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+<h1>{{ article.title }}</h1>
+<p>{{ article.published_on|date:"F j, Y" }}</p>
+{% if user.is_staff %}
+<p><a href="{% url 'article_edit' article.slug %}">Edit this post</a></p>
+{% endif %}
+<div>{{ article.article_body|render_markdown }}</div>
+{% endblock %}
+
+{% block sidebar %}
+{% if user.is_staff %}
+<h2>This post</h2>
+<ul>
+    <li><a href="{% url 'article_edit' article.slug %}">Edit in the markdown editor</a></li>
+</ul>
+{% endif %}
+{% endblock %}

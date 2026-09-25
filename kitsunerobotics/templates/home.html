@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load markdown_tags %}
 
 {% block title %}KitsuneRobotics - Personal Site for Projects, Tools & Store{% endblock %}
 
@@ -68,25 +69,13 @@ tools, web development, creative projects{% endblock %}
         <h2>Read the blog!</h2>
         {% for post in latest_posts %}
         <article class="blog-preview">
-            {% if post.featured_image %}
-            <div class="blog-preview-image">
-                <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" loading="lazy">
-            </div>
-            {% endif %}
             <div class="blog-preview-content">
                 <h3><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3>
                 <div class="blog-meta">
-                    <span class="blog-date">{{ post.display_date|date:"F j, Y" }}</span>
-                    {% if post.tags.exists %}
-                    <span class="blog-tags">
-                        {% for tag in post.tags.all %}
-                        <span class="tag">{{ tag.name }}</span>
-                        {% endfor %}
-                    </span>
-                    {% endif %}
+                    <span class="blog-date">{{ post.published_on|date:"F j, Y" }}</span>
                 </div>
-                {% if post.excerpt %}
-                <p class="blog-excerpt">{{ post.excerpt }}</p>
+                {% if post.article_body.excerpt %}
+                <div class="blog-excerpt">{{ post.article_body.excerpt|render_markdown }}</div>
                 {% endif %}
                 <a href="{{ post.get_absolute_url }}" class="read-more">Read More →</a>
             </div>
@@ -96,7 +85,7 @@ tools, web development, creative projects{% endblock %}
         {% endif %}
         {% endfor %}
         <p class="blog-section-footer">
-            <a href="{% url 'blog:blog_list' %}">View all blog posts →</a>
+            <a href="{% url 'blog_list' %}">View all blog posts →</a>
         </p>
     </section>
     {% endif %}

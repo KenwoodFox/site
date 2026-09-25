@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 from datetime import timedelta, timezone as dt_timezone
-from apps.blog.models import BlogPost
+from siteblog.models import Article
 
 import os
 
@@ -107,11 +107,11 @@ class Command(BaseCommand):
     </url>"""
 
             # Add blog posts
-            for post in BlogPost.objects.filter(status="published"):
+            for post in Article.objects.published():
                 sitemap_content += f"""
     <url>
         <loc>https://{domain}{post.get_absolute_url()}</loc>
-        <lastmod>{post.updated_at.strftime('%Y-%m-%d')}</lastmod>
+        <lastmod>{post.modified.strftime('%Y-%m-%d')}</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>"""

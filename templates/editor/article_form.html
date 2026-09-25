@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% if form.instance.pk %}Edit post{% else %}New post{% endif %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/markdown-editor.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/resumable.min.js' %}"></script>
+<script src="{% static 'js/blog-editor.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<h1>{% if form.instance.pk %}Edit post{% else %}New post{% endif %}</h1>
+<p>Write in Markdown. Drop or paste an image to embed it.</p>
+
+<form method="post" class="blog-post-form">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <p>
+        <label for="{{ form.title.id_for_label }}">Title</label>
+        {{ form.title }}
+        {{ form.title.errors }}
+    </p>
+    <p>
+        <label for="{{ form.slug.id_for_label }}">Slug</label>
+        {{ form.slug }}
+        <small>Leave blank on a new post to build it from the title.</small>
+        {{ form.slug.errors }}
+    </p>
+    <p>
+        <label for="{{ form.status.id_for_label }}">Status</label>
+        {{ form.status }}
+        {{ form.status.errors }}
+    </p>
+    <p>
+        <label for="{{ form.published_on.id_for_label }}">Published on</label>
+        {{ form.published_on }}
+        {{ form.published_on.errors }}
+    </p>
+
+    <div class="markdown-editor-container">
+        <div class="editor-toolbar">
+            <button type="button" class="toolbar-btn" data-insert="# ">H1</button>
+            <button type="button" class="toolbar-btn" data-insert="## ">H2</button>
+            <button type="button" class="toolbar-btn" data-insert="**bold**">Bold</button>
+            <button type="button" class="toolbar-btn" data-insert="*italic*">Italic</button>
+            <button type="button" class="toolbar-btn" data-insert="[link](url)">Link</button>
+            <button type="button" class="toolbar-btn" data-insert="![alt](image_url)">Image</button>
+            <button type="button" class="toolbar-btn" data-insert="```&#10;code&#10;```">Code</button>
+            <button type="button" class="toolbar-btn" data-insert="- ">List</button>
+        </div>
+        {{ form.article_body }}
+        {{ form.article_body.errors }}
+        <div class="image-upload-zone" id="imageUploadZone"
+            data-max-bytes="{{ max_upload_bytes }}"
+            data-chunk-bytes="{{ upload_chunk_bytes }}">
+            <p>Drop a file here, or paste an image. Up to {{ max_upload_bytes|filesizeformat }}.</p>
+            <input type="file" id="blogFileInput" class="blog-file-input" multiple>
+            <button type="button" id="blogFileButton">Choose a file</button>
+            <div class="upload-progress" id="uploadProgress" hidden>
+                <div class="upload-progress-bar" id="uploadProgressBar"></div>
+            </div>
+            <p id="uploadStatus" hidden></p>
+        </div>
+    </div>
+
+    <p>
+        <button type="submit">{% if form.instance.pk %}Update post{% else %}Create post{% endif %}</button>
+        <a href="{% url 'blog_list' %}">Cancel</a>
+        {% if form.instance.pk %}
+        <a href="{{ form.instance.get_absolute_url }}">View post</a>
+        {% endif %}
+    </p>
+</form>
+{% endblock %}
