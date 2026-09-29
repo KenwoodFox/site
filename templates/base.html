@@ -164,7 +164,6 @@
       <h2>Admin</h2>
       <ul>
         <li><a href="{% url 'admin:index' %}">Django admin</a></li>
-        <li><a href="{% url 'article_create' %}">Write a post</a></li>
         <li><a href="{% url 'admin:siteblog_article_changelist' %}">Blog posts</a></li>
       </ul>
       {% endif %}
@@ -232,6 +231,27 @@
 
   <!-- Live Stats Script -->
   <script src="{% static 'js/live-stats.js' %}"></script>
+  <script>
+    document.addEventListener('click', function (event) {
+      const link = event.target.closest('a.post-image');
+      if (!link) {
+        return;
+      }
+      event.preventDefault();
+      let box = document.getElementById('post-lightbox');
+      if (!box) {
+        box = document.createElement('div');
+        box.id = 'post-lightbox';
+        box.innerHTML = '<img alt="">';
+        box.addEventListener('click', function () {
+          box.classList.remove('open');
+        });
+        document.body.appendChild(box);
+      }
+      box.querySelector('img').src = link.getAttribute('href');
+      box.classList.add('open');
+    });
+  </script>
 
   {% block extra_js %}{% endblock %}
 </body>

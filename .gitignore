@@ -12,6 +12,7 @@ Pipfile*
 
 # Dev DB
 db.sqlite3
+media/
 .local/
 staticfiles
 static/sitemap.xml

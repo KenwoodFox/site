@@ -27,12 +27,19 @@ LOGGING = {
             "class": "logging.FileHandler",
             "filename": "debug.log",
         },
+        "console": {
+            "class": "logging.StreamHandler",
+        },
     },
     "loggers": {
         "django": {
             "handlers": ["file"],
             "level": "DEBUG",
             "propagate": True,
+        },
+        "kitsunerobotics": {
+            "handlers": ["console", "file"],
+            "level": "INFO",
         },
     },
 }
@@ -51,6 +58,11 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
 
 # Site URL for webhooks and external links
 SITE_URL = os.getenv("SITE_URL", "https://kitsunehosting.net")
+
+# Blog source repo
+BLOG_REPO_URL = os.getenv(
+    "BLOG_REPO_URL", "https://git.kitsunehosting.net/Kenwood/blog.git"
+)
 
 # Required by django.contrib.sites and django-site-blog
 SITE_ID = 1

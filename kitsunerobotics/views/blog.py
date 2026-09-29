@@ -6,6 +6,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse
 from django.views.decorators.http import require_POST
 from django.views.generic import DetailView, ListView
 
@@ -43,7 +44,7 @@ def send_comment_webhook(comment):
     message = (
         f"New comment{needs_approval} on {comment.article.title}\n"
         f"{comment.author_name}: {comment.body[:500]}\n"
-        f"{settings.SITE_URL}{comment.article.get_absolute_url()}"
+        f"{settings.SITE_URL}{reverse('article_detail', args=[comment.article.slug])}"
     )
     try:
         response = requests.post(url, json={"content": message}, timeout=5)
@@ -91,7 +92,7 @@ def post_comment(request, slug):
     form = CommentForm(request.POST)
     if not form.is_valid():
         messages.error(request, "Say something first.")
-        return redirect(article.get_absolute_url() + "#comments")
+        return redirect(reverse("article_detail", args=[article.slug]) + "#comments")
 
     author_name, approved = comment_identity(request.user)
     comment = Comment.objects.create(
@@ -106,4 +107,4 @@ def post_comment(request, slug):
         messages.success(request, "Posted.")
     else:
         messages.success(request, "Got it. I'll look this over before it shows.")
-    return redirect(article.get_absolute_url() + "#comments")
+    return redirect(reverse("article_detail", args=[article.slug]) + "#comments")

@@ -66,6 +66,24 @@ class CommentTests(TestCase):
         listing = self.client.get(reverse("blog_list"))
         self.assertContains(listing, "secret")
 
+    def test_comment_on_a_draft_stays_on_the_post(self):
+        Article.objects.create(
+            title="Secret",
+            slug="secret",
+            article_body="Not yet",
+            status="draft",
+        )
+        staff = CustomUser.objects.create_user(
+            "editor", "e@example.com", "pass", is_staff=True, email_verified=True
+        )
+        self.client.force_login(staff)
+        response = self.client.post(reverse("post_comment", args=["secret"]), {"body": "Hi"})
+        self.assertRedirects(
+            response,
+            reverse("article_detail", args=["secret"]) + "#comments",
+            fetch_redirect_response=False,
+        )
+
     def test_public_cannot_see_a_draft(self):
         Article.objects.create(
             title="Secret",
