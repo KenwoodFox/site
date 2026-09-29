@@ -119,6 +119,19 @@ a.download-box span { display: block; font-size: smaller; }
 
 h1, h2, h3 { font-size: 1.2em; }
 
+.blog-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+.blog-heading h1 { margin: 0; }
+a.rss img {
+  width: 1em;
+  height: 1em;
+  vertical-align: text-bottom;
+}
+
 label { display: block; margin-top: 0.5em; }
 input, textarea, select, button { font: inherit; }
 button,

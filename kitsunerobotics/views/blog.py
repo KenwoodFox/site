@@ -1,10 +1,12 @@
 import logging
 
+import markdown
 import requests
 from django import forms
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.syndication.views import Feed
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views.decorators.http import require_POST
@@ -108,3 +110,34 @@ def post_comment(request, slug):
     else:
         messages.success(request, "Got it. I'll look this over before it shows.")
     return redirect(reverse("article_detail", args=[article.slug]) + "#comments")
+
+
+class ArticleFeed(Feed):
+    title = "KitsuneHosting"
+    link = "/blog/"
+    description = "Posts from KitsuneHosting"
+
+    def get_object(self, request, *args, **kwargs):
+        self.site = get_current_site(request)
+        return None
+
+    def items(self):
+        return (
+            Article.objects.published()
+            .visible_on_site(self.site)
+            .order_by("-published_on", "title")[:20]
+        )
+
+    def item_title(self, item):
+        return item.title
+
+    def item_link(self, item):
+        return reverse("article_detail", args=[item.slug])
+
+    def item_pubdate(self, item):
+        return item.published_on
+
+    def item_description(self, item):
+        body = item.article_body
+        text = body.excerpt or getattr(body, "content", "")
+        return markdown.markdown(text or "", extensions=["extra", "fenced_code"])

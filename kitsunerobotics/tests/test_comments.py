@@ -62,7 +62,7 @@ class CommentTests(TestCase):
         self.client.force_login(staff)
         response = self.client.get(reverse("article_detail", args=["secret"]))
         self.assertContains(response, "Not yet")
-        self.assertContains(response, "Draft. Only staff can see this.")
+        self.assertContains(response, "!!DRAFT!!")
         listing = self.client.get(reverse("blog_list"))
         self.assertContains(listing, "secret")
 
@@ -83,6 +83,19 @@ class CommentTests(TestCase):
             reverse("article_detail", args=["secret"]) + "#comments",
             fetch_redirect_response=False,
         )
+
+    def test_feed_lists_published_posts(self):
+        Article.objects.create(
+            title="Secret",
+            slug="secret",
+            article_body="Hidden",
+            status="draft",
+        )
+        response = self.client.get(reverse("blog_feed"))
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("application/rss+xml", response["Content-Type"])
+        self.assertContains(response, "Hello")
+        self.assertNotContains(response, "Secret")
 
     def test_public_cannot_see_a_draft(self):
         Article.objects.create(

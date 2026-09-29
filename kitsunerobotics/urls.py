@@ -6,7 +6,12 @@ from django.http import HttpResponse
 from django.conf import settings
 from django.conf.urls.static import static
 
-from kitsunerobotics.views.blog import ArticleDetailView, ArticleListView, post_comment
+from kitsunerobotics.views.blog import (
+    ArticleDetailView,
+    ArticleFeed,
+    ArticleListView,
+    post_comment,
+)
 from kitsunerobotics.views.home import HomeView
 from kitsunerobotics.views.projects import ProjectsView
 from kitsunerobotics.views.tools import ToolsView
@@ -31,6 +36,7 @@ urlpatterns = [
     ),
     # "app" urls
     path("blog/", ArticleListView.as_view(), name="blog_list"),
+    path("blog/feed/", ArticleFeed(), name="blog_feed"),
     path("blog/<slug:slug>/comment/", post_comment, name="post_comment"),
     path("blog/<slug:slug>/", ArticleDetailView.as_view(), name="article_detail"),
     path("blog/", include("siteblog.urls")),

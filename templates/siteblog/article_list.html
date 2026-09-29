@@ -1,10 +1,13 @@
 {% extends "base.html" %}
-{% load markdown_tags %}
+{% load markdown_tags static %}
 
 {% block title %}Blog - KitsuneHosting{% endblock %}
 
 {% block content %}
+<div class="blog-heading">
 <h1>Blog</h1>
+<a class="rss" href="{% url 'blog_feed' %}"><img src="{% static 'rss.svg' %}" alt="" width="16" height="16"> RSS</a>
+</div>
 {% if articles %}
 {% for article in articles %}
 <article>
