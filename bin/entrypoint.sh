@@ -8,14 +8,9 @@
 # Generate initial sitemap
 ./manage.py ensure_sitemap
 
-# Pull the blog every 10 minutes, and refresh the sitemap every 6 hours.
-crontab - <<'EOF'
-*/10 * * * * /app/manage.py load_blog >> /var/log/cron.log 2>&1
-0 */6 * * * /app/manage.py ensure_sitemap >> /var/log/cron.log 2>&1
-EOF
-
-# Start cron daemon
-service cron start
+# Supercronic
+supercronic -test /app/bin/crontab || exit 1
+supercronic /app/bin/crontab &
 
 gunicorn kitsunerobotics.wsgi:application \
     --bind 0.0.0.0:80 \
