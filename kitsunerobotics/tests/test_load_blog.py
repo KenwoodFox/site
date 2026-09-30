@@ -31,12 +31,14 @@ class LoadBlogTests(TestCase):
         post_dir = repo / "rackcontroller4u"
         post_dir.mkdir(parents=True)
         (post_dir / "photo.png").write_bytes(b"png")
+        (post_dir / "preview.png").write_bytes(b"png")
         (repo / "rackcontroller4u.md").write_text(
             "---\n"
             "title: Watercooling Rack Controller\n"
             "published: 2026-10-01\n"
             "status: draft\n"
             "tags: pcb kicad pc_building 3d_printing\n"
+            "preview: rackcontroller4u/preview.png\n"
             "---\n"
             "Hello\n\n"
             "![the rack](rackcontroller4u/photo.png)\n",
@@ -62,6 +64,10 @@ class LoadBlogTests(TestCase):
         self.assertEqual(
             article.article_tags.names,
             ["pcb", "kicad", "pc_building", "3d_printing"],
+        )
+        self.assertEqual(
+            article.article_tags.preview,
+            "/media/blog/rackcontroller4u/preview.png",
         )
         self.assertTrue((repo / "rackcontroller4u" / "photo.png").is_file())
         self.assertFalse(Article.objects.filter(slug="old-post").exists())

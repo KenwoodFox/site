@@ -7,7 +7,7 @@ from django.conf import settings
 from django.utils import timezone
 from django.utils.text import slugify
 
-from kitsunerobotics.models import ArticleTags, tags_for
+from kitsunerobotics.models import ArticleTags, preview_for, tags_for
 from kitsunerobotics.webhooks import notify_post_removed, notify_post_update
 from siteblog.models import Article
 
@@ -64,6 +64,21 @@ def rewrite_links(body, markdown_path, repo_root):
     return LINK.sub(replace, body)
 
 
+def preview_url(markdown_path, repo_root, value):
+    """Turn a frontmatter preview path into a /media/blog/ URL."""
+    if not value:
+        return ""
+    value = value.strip()
+    if value.startswith(("http://", "https://")):
+        return value
+    repo_root = Path(repo_root).resolve()
+    source = (markdown_path.parent / value).resolve()
+    if not source.is_file() or not source.is_relative_to(repo_root):
+        return ""
+    relative = source.relative_to(repo_root)
+    return f"{settings.MEDIA_URL.rstrip('/')}/blog/{relative.as_posix()}"
+
+
 def article_body(article):
     body = article.article_body
     content = getattr(body, "content", None)
@@ -90,6 +105,7 @@ def load_posts(repo_root):
             status = "draft"
         body = rewrite_links(body, markdown_path, repo_root)
         tags = parse_tags(meta.get("tags"))
+        preview = preview_url(markdown_path, repo_root, meta.get("preview"))
         raw_published = meta.get("published")
         when = published_on(raw_published) if raw_published else None
         article = Article.objects.filter(slug=slug).first()
@@ -105,12 +121,14 @@ def load_posts(repo_root):
                 published_on=when,
             )
         previous_tags = [] if created else tags_for(article)
+        previous_preview = "" if created else preview_for(article)
         changed = created or (
             article.title != title
             or article_body(article) != body
             or article.status != status
             or article.published_on != when
             or previous_tags != tags
+            or previous_preview != preview
         )
         if changed:
             article.title = title
@@ -119,7 +137,7 @@ def load_posts(repo_root):
             article.published_on = when
             article.save()
             ArticleTags.objects.update_or_create(
-                article=article, defaults={"names": tags}
+                article=article, defaults={"names": tags, "preview": preview}
             )
             notify_post_update(article, created, tags)
         slugs.append(slug)

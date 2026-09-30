@@ -1,1 +1,41 @@
-/* Page styles live in base.css. */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.tools-grid .tool-card {
+  margin: 0;
+  display: flex;
+}
+
+.tools-grid .tool-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.tools-grid .tool-button {
+  margin-top: auto;
+  align-self: start;
+}
+
+a.tool-button {
+  display: inline-block;
+  background: #c0c0c0;
+  color: #000000;
+  border: 2px outset #ffffff;
+  padding: 2px 8px;
+  text-decoration: none;
+}
+
+a.tool-button:link,
+a.tool-button:visited {
+  color: #000000;
+}
+
+@media (max-width: 640px) {
+  .tools-grid {
+    grid-template-columns: 1fr;
+  }
+}

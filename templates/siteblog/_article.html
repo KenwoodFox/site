@@ -1,0 +1,7 @@
+<article>
+    <h2><a href="{% url 'article_detail' article.slug %}">{{ article.title }}</a>{% if article.status != "published" %} (draft){% endif %}</h2>
+    <p>{{ article.published_on|date:"F j, Y" }}</p>
+    {% include "siteblog/_preview.html" %}
+    {% include "siteblog/_tags.html" %}
+    <p><a href="{% url 'article_detail' article.slug %}">Read more</a></p>
+</article>

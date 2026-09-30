@@ -10,33 +10,32 @@
 
 {% block content %}
 <div class="tools-container">
-    <header class="tools-header">
-        <h1>Tools</h1>
-    </header>
-
+    {% for group in tool_groups %}
     <section class="tools-section">
+        <h2>{{ group.title }}</h2>
         <div class="tools-grid">
-            <div class="tool-card external-tool formal-tool">
+            {% for tool in group.tools %}
+            <div class="tool-card">
                 <div class="tool-content">
-                    <h3>dotslashgabut.github.io/cutopt</h3>
-                    <p>Its a handy cutting tool!</p>
-                    <a href="https://dotslashgabut.github.io/cutopt.html" class="tool-button external">Visit cutopt</a>
+                    <h3>{{ tool.name }}</h3>
+                    <p>{{ tool.note }}</p>
+                    <a href="{{ tool.url }}" class="tool-button external">Open</a>
                 </div>
             </div>
+            {% endfor %}
         </div>
     </section>
+    {% endfor %}
 </div>
 {% endblock %}
 
 {% block sidebar %}
-<div class="tools-sidebar">
-    <h2>Quick Access</h2>
-
-    <div class="sidebar-section">
-        <h3>Resources</h3>
-        <ul class="sidebar-links">
-            <li><a href="https://dotslashgabut.github.io/cutopt.html">Cutopt</a></li>
-        </ul>
-    </div>
-</div>
+{% for group in tool_groups %}
+<h2>{{ group.title }}</h2>
+<ul>
+    {% for tool in group.tools %}
+    <li><a href="{{ tool.url }}">{{ tool.name }}</a></li>
+    {% endfor %}
+</ul>
+{% endfor %}
 {% endblock %}

@@ -142,6 +142,26 @@ class CommentTests(TestCase):
         self.assertIn("verified: Nice post", content)
         self.assertEqual(post.call_args.args[0], "https://example.test/hook")
 
+    def test_preview_image_is_the_card_and_open_graph_image(self):
+        ArticleTags.objects.create(
+            article=self.article,
+            names=[],
+            preview="/media/blog/hello/preview.png",
+        )
+        listing = self.client.get(reverse("blog_list"))
+        self.assertContains(listing, 'class="post-preview"')
+        self.assertContains(listing, "/media/blog/hello/preview.png")
+        self.assertContains(listing, "A post")
+        home = self.client.get(reverse("home"))
+        self.assertContains(home, "/media/blog/hello/preview.png")
+        self.assertContains(home, "A post")
+        detail = self.client.get(reverse("article_detail", args=["hello"]))
+        self.assertContains(detail, 'property="og:image"')
+        self.assertContains(detail, 'name="twitter:image"')
+        self.assertContains(
+            detail, "https://kitsunehosting.net/media/blog/hello/preview.png"
+        )
+
     def test_tag_page_lists_only_matching_posts(self):
         other = Article.objects.create(
             title="Other",

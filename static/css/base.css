@@ -131,6 +131,12 @@ a.rss img {
   height: 1em;
   vertical-align: text-bottom;
 }
+.post-summary {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 0.4em 0;
+}
 .post-tags { margin: 0.4em 0; }
 a.post-tag {
   display: inline-block;
@@ -140,6 +146,17 @@ a.post-tag {
   text-decoration: none;
 }
 a.post-tag:hover { text-decoration: underline; }
+.post-preview {
+  display: block;
+  width: 200px;
+  flex: 0 0 200px;
+  max-width: 40%;
+  height: auto;
+  margin: 0;
+}
+.blog-excerpt { flex: 1; min-width: 0; }
+.blog-excerpt > :first-child { margin-top: 0; }
+.blog-excerpt > :last-child { margin-bottom: 0; }
 
 label { display: block; margin-top: 0.5em; }
 input, textarea, select, button { font: inherit; }

@@ -26,6 +26,7 @@ class ArticleTags(models.Model):
         related_name="article_tags",
     )
     names = models.JSONField(default=list, blank=True)
+    preview = models.CharField(max_length=500, blank=True, default="")
 
     class Meta:
         verbose_name = "Article tags"
@@ -41,6 +42,13 @@ def tags_for(article):
     except ArticleTags.DoesNotExist:
         return []
     return list(names or [])
+
+
+def preview_for(article):
+    try:
+        return article.article_tags.preview or ""
+    except ArticleTags.DoesNotExist:
+        return ""
 
 
 def filter_by_tag(articles, tag):

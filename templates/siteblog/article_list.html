@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load markdown_tags static %}
+{% load static %}
 
 {% block title %}{% if tag %}{{ tag }}{% else %}Blog{% endif %}{% endblock %}
 
@@ -10,15 +10,7 @@
 </div>
 {% if articles %}
 {% for article in articles %}
-<article>
-    <h2><a href="{% url 'article_detail' article.slug %}">{{ article.title }}</a>{% if article.status != "published" %} (draft){% endif %}</h2>
-    <p>{{ article.published_on|date:"F j, Y" }}</p>
-    {% include "siteblog/_tags.html" %}
-    {% if article.article_body.excerpt %}
-    <div>{{ article.article_body.excerpt|render_markdown }}</div>
-    {% endif %}
-    <p><a href="{% url 'article_detail' article.slug %}">Read more</a></p>
-</article>
+{% include "siteblog/_article.html" %}
 {% endfor %}
 {% else %}
 <p>{% if tag %}No posts tagged {{ tag }}.{% else %}No blog posts have been published yet.{% endif %}</p>

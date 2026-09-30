@@ -12,6 +12,14 @@ class MainPageTests(TestCase):
         """Test that the tools/apps page loads successfully."""
         response = self.client.get(reverse("tools"))
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "My tools")
+        self.assertContains(response, "https://nextcloud.kitsunehosting.net/")
+        self.assertContains(response, "https://bitwarden.kitsunehosting.net/")
+        self.assertContains(response, "https://git.kitsunehosting.net/")
+        self.assertContains(response, "Zinc")
+        self.assertContains(response, "Vaultwarden")
+        self.assertContains(response, "Gitea")
+        self.assertContains(response, "cutopt")
 
     def test_blog_page_loads(self):
         """Test that the blog page loads successfully."""

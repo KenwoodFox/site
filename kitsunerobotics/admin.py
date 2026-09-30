@@ -17,7 +17,7 @@ def approve_comments(modeladmin, request, queryset):
 
 @admin.register(ArticleTags)
 class ArticleTagsAdmin(admin.ModelAdmin):
-    list_display = ("article", "names")
+    list_display = ("article", "names", "preview")
 
 
 @admin.register(Comment)

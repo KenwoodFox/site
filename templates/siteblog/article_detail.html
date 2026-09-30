@@ -1,7 +1,14 @@
 {% extends "siteblog/base.html" %}
-{% load markdown_tags %}
+{% load blog_tags markdown_tags static %}
 
 {% block title %}{{ article.title }}{% endblock %}
+{% block og_title %}{{ article.title }}{% endblock %}
+{% block twitter_title %}{{ article.title }}{% endblock %}
+{% block og_url %}{% url 'article_detail' article.slug as article_path %}{{ article_path|absolute_url }}{% endblock %}
+{% block og_image %}{% with image=article|post_preview %}{% if image %}{{ image|absolute_url }}{% else %}{% static 'placeholders/placeholder_wide.png' %}{% endif %}{% endwith %}{% endblock %}
+{% block twitter_image %}{% with image=article|post_preview %}{% if image %}{{ image|absolute_url }}{% else %}{% static 'placeholders/placeholder_wide.png' %}{% endif %}{% endwith %}{% endblock %}
+{% block og_image_alt %}{{ article.title }}{% endblock %}
+{% block twitter_image_alt %}{{ article.title }}{% endblock %}
 
 {% block content %}
 <h1>{{ article.title }}</h1>

@@ -1,0 +1,13 @@
+{% load blog_tags markdown_tags %}
+{% with image=article|post_preview %}
+{% if image or article.article_body.excerpt %}
+<div class="post-summary">
+{% if image %}
+<img class="post-preview" src="{{ image }}" alt="{{ article.title }}">
+{% endif %}
+{% if article.article_body.excerpt %}
+<div class="blog-excerpt">{{ article.article_body.excerpt|render_markdown }}</div>
+{% endif %}
+</div>
+{% endif %}
+{% endwith %}
