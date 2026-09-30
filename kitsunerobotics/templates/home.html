@@ -2,58 +2,8 @@
 {% load static %}
 {% load markdown_tags %}
 
-{% block title %}KitsuneHosting - Personal Site for Projects, Tools & Store{% endblock %}
-
-{% block meta_description %}KitsuneHosting - Projects, Tools, Blog, Store and more!{% endblock %}
-
-{% block meta_keywords %}KitsuneHosting, projects, tools, blog, store, robotics, engineering, personal site, online
-tools, web development, creative projects{% endblock %}
-
-{% block og_title %}KitsuneHosting - Personal Site for Projects, Tools & Store{% endblock %}
-
-{% block og_description %}KitsuneHosting - Projects, Tools, Blog, Store and more!{% endblock %}
-
 {% block og_image %}{% static 'placeholders/home_preview.png' %}{% endblock %}
-
-{% block twitter_title %}KitsuneHosting - Personal Site for Projects, Tools & Store{% endblock %}
-
-{% block twitter_description %}KitsuneHosting - Projects, Tools, Blog, Store and more!{% endblock %}
-
 {% block twitter_image %}{% static 'placeholders/home_preview.png' %}{% endblock %}
-{% block og_image_alt %}KitsuneHosting - Personal Site for Projects, Tools & Store{% endblock %}
-{% block twitter_image_alt %}KitsuneHosting - Personal Site for Projects, Tools & Store{% endblock %}
-{% block meta_subject %}Robotics, Engineering, Projects, Tools, Store{% endblock %}
-{% block meta_category %}Robotics, Engineering, Tools, Store{% endblock %}
-{% block schema_description %}Personal site for robotics projects, tools, blog, and store{% endblock %}
-
-
-{% block extra_head %}
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "KitsuneHosting",
-  "description": "Personal site for projects, tools, blog, and store",
-  "url": "https://kitsunehosting.net",
-  "author": {
-    "@type": "Organization",
-    "name": "KitsuneRobotics",
-    "url": "https://kitsunehosting.net"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "KitsuneRobotics",
-    "url": "https://kitsunehosting.net"
-  },
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": "https://kitsunehosting.net/search?q={search_term_string}",
-    "query-input": "required name=search_term_string"
-  }
-}
-</script>
-
-{% endblock %}
 
 {% block content %}
 <section class="intro-section">
@@ -66,7 +16,7 @@ tools, web development, creative projects{% endblock %}
     <!-- Latest Blog Posts Section -->
     {% if latest_posts %}
     <section class="latest-blog-posts">
-        <h2>Read the blog!</h2>
+        <h2>Blog</h2>
         {% for post in latest_posts %}
         <article class="blog-preview">
             <div class="blog-preview-content">

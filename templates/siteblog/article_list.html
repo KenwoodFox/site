@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load markdown_tags static %}
 
-{% block title %}{% if tag %}{{ tag }} - Blog{% else %}Blog - KitsuneHosting{% endif %}{% endblock %}
+{% block title %}{% if tag %}{{ tag }}{% else %}Blog{% endif %}{% endblock %}
 
 {% block content %}
 <div class="blog-heading">
