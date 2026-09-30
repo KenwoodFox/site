@@ -1,8 +1,10 @@
+from unittest.mock import patch
+
 from django.test import TestCase
 from django.urls import reverse
 
 from apps.users.models import CustomUser
-from kitsunerobotics.models import Comment, SiteSetting
+from kitsunerobotics.models import ArticleTags, Comment, SiteSetting
 from kitsunerobotics.views.blog import send_comment_webhook
 from siteblog.models import Article
 
@@ -91,10 +93,12 @@ class CommentTests(TestCase):
             article_body="Hidden",
             status="draft",
         )
+        ArticleTags.objects.create(article=self.article, names=["pcb", "kicad"])
         response = self.client.get(reverse("blog_feed"))
         self.assertEqual(response.status_code, 200)
         self.assertIn("application/rss+xml", response["Content-Type"])
         self.assertContains(response, "Hello")
+        self.assertContains(response, "pcb")
         self.assertNotContains(response, "Secret")
 
     def test_public_cannot_see_a_draft(self):
@@ -119,3 +123,55 @@ class CommentTests(TestCase):
         send_comment_webhook(comment)
         setting = SiteSetting.objects.get(key="blogpost_webhook")
         self.assertEqual(setting.value, "None")
+
+    def test_comment_and_tags_reach_discord_and_the_post(self):
+        SiteSetting.objects.create(
+            key="blogpost_webhook", value="https://example.test/hook"
+        )
+        ArticleTags.objects.create(article=self.article, names=["pcb", "kicad"])
+        self.client.force_login(self.verified)
+        with patch("kitsunerobotics.webhooks.requests.post") as post:
+            self.client.post(reverse("post_comment", args=["hello"]), {"body": "Nice post"})
+        page = self.client.get(reverse("article_detail", args=["hello"]))
+        self.assertContains(page, "post-tag")
+        self.assertContains(page, reverse("blog_tag", args=["pcb"]))
+        self.assertContains(page, "kicad")
+        content = post.call_args.kwargs["json"]["content"]
+        self.assertIn("New comment on Hello", content)
+        self.assertIn("tags: pcb, kicad", content)
+        self.assertIn("verified: Nice post", content)
+        self.assertEqual(post.call_args.args[0], "https://example.test/hook")
+
+    def test_tag_page_lists_only_matching_posts(self):
+        other = Article.objects.create(
+            title="Other",
+            slug="other",
+            article_body="Something else",
+            status="published",
+        )
+        draft = Article.objects.create(
+            title="Secret",
+            slug="secret",
+            article_body="Not yet",
+            status="draft",
+        )
+        ArticleTags.objects.create(article=self.article, names=["pcb", "kicad"])
+        ArticleTags.objects.create(article=other, names=["kicad"])
+        ArticleTags.objects.create(article=draft, names=["pcb"])
+
+        pcb = self.client.get(reverse("blog_tag", args=["pcb"]))
+        self.assertContains(pcb, "Hello")
+        self.assertNotContains(pcb, "Other")
+        self.assertNotContains(pcb, "Secret")
+        self.assertContains(pcb, "Blog</a>: pcb")
+
+        empty = self.client.get(reverse("blog_tag", args=["missing"]))
+        self.assertContains(empty, "No posts tagged missing.")
+
+        staff = CustomUser.objects.create_user(
+            "staff", "s2@example.com", "pass", is_staff=True
+        )
+        self.client.force_login(staff)
+        staff_page = self.client.get(reverse("blog_tag", args=["pcb"]))
+        self.assertContains(staff_page, "Hello")
+        self.assertContains(staff_page, "Secret")

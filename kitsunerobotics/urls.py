@@ -36,6 +36,7 @@ urlpatterns = [
     ),
     # "app" urls
     path("blog/", ArticleListView.as_view(), name="blog_list"),
+    path("blog/tag/<str:tag>/", ArticleListView.as_view(), name="blog_tag"),
     path("blog/feed/", ArticleFeed(), name="blog_feed"),
     path("blog/<slug:slug>/comment/", post_comment, name="post_comment"),
     path("blog/<slug:slug>/", ArticleDetailView.as_view(), name="article_detail"),

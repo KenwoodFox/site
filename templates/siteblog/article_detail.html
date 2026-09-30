@@ -11,6 +11,7 @@
 {% endif %}
 
 <p>{{ article.published_on|date:"F j, Y" }}</p>
+{% include "siteblog/_tags.html" %}
 <div>{{ article.article_body|render_markdown }}</div>
 
 <h2 id="comments">Comments</h2>

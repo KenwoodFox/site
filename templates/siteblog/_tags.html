@@ -1,0 +1,6 @@
+{% load blog_tags %}
+{% with names=article|post_tags %}
+{% if names %}
+<p class="post-tags">{% for name in names %}<a class="post-tag" href="{% url 'blog_tag' name %}">{{ name }}</a>{% endfor %}</p>
+{% endif %}
+{% endwith %}

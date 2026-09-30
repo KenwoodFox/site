@@ -73,6 +73,7 @@ tools, web development, creative projects{% endblock %}
                 <h3><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3>
                 <div class="blog-meta">
                     <span class="blog-date">{{ post.published_on|date:"F j, Y" }}</span>
+                    {% include "siteblog/_tags.html" with article=post %}
                 </div>
                 {% if post.article_body.excerpt %}
                 <div class="blog-excerpt">{{ post.article_body.excerpt|render_markdown }}</div>

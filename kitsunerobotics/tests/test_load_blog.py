@@ -2,10 +2,12 @@ import os
 import subprocess
 from datetime import date
 from pathlib import Path
+from unittest.mock import patch
 
 from django.test import TestCase, override_settings
 
 from kitsunerobotics.blog_loader import load_posts, pull_blog
+from kitsunerobotics.models import SiteSetting
 from kitsunerobotics.templatetags.markdown_tags import render_markdown
 from siteblog.models import Article
 
@@ -34,6 +36,7 @@ class LoadBlogTests(TestCase):
             "title: Watercooling Rack Controller\n"
             "published: 2026-10-01\n"
             "status: draft\n"
+            "tags: pcb kicad pc_building 3d_printing\n"
             "---\n"
             "Hello\n\n"
             "![the rack](rackcontroller4u/photo.png)\n",
@@ -56,8 +59,47 @@ class LoadBlogTests(TestCase):
         self.assertEqual(article.status, "draft")
         self.assertEqual(article.published_on.date(), date(2026, 10, 1))
         self.assertIn("/media/blog/rackcontroller4u/photo.png", article.article_body.content)
+        self.assertEqual(
+            article.article_tags.names,
+            ["pcb", "kicad", "pc_building", "3d_printing"],
+        )
         self.assertTrue((repo / "rackcontroller4u" / "photo.png").is_file())
         self.assertFalse(Article.objects.filter(slug="old-post").exists())
+
+    def test_post_changes_notify_discord_and_keep_tags(self):
+        SiteSetting.objects.create(
+            key="blogpost_webhook", value="https://example.test/hook"
+        )
+        repo = Path(self._tmp())
+        path = repo / "hello.md"
+        path.write_text(
+            "---\ntitle: Hello\nstatus: published\ntags: pcb, kicad\n---\nHi\n",
+            encoding="utf-8",
+        )
+
+        with patch("kitsunerobotics.webhooks.requests.post") as post:
+            load_posts(repo)
+            self.assertEqual(post.call_count, 1)
+            content = post.call_args.kwargs["json"]["content"]
+            self.assertIn("New blog post: Hello", content)
+            self.assertIn("tags: pcb, kicad", content)
+            self.assertEqual(post.call_args.args[0], "https://example.test/hook")
+
+            post.reset_mock()
+            load_posts(repo)
+            post.assert_not_called()
+
+            path.write_text(
+                "---\ntitle: Hello\nstatus: published\ntags: pcb water\n---\nHi\n",
+                encoding="utf-8",
+            )
+            load_posts(repo)
+
+        article = Article.objects.get(slug="hello")
+        self.assertEqual(article.article_tags.names, ["pcb", "water"])
+        content = post.call_args.kwargs["json"]["content"]
+        self.assertIn("Updated blog post: Hello", content)
+        self.assertIn("tags: pcb, water", content)
 
     def test_unchanged_repo_is_not_loaded_again(self):
         origin = Path(self._tmp())

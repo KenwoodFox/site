@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% load markdown_tags static %}
 
-{% block title %}Blog - KitsuneHosting{% endblock %}
+{% block title %}{% if tag %}{{ tag }} - Blog{% else %}Blog - KitsuneHosting{% endif %}{% endblock %}
 
 {% block content %}
 <div class="blog-heading">
-<h1>Blog</h1>
+<h1>{% if tag %}<a href="{% url 'blog_list' %}">Blog</a>: {{ tag }}{% else %}Blog{% endif %}</h1>
 <a class="rss" href="{% url 'blog_feed' %}"><img src="{% static 'rss.svg' %}" alt="" width="16" height="16"> RSS</a>
 </div>
 {% if articles %}
@@ -13,6 +13,7 @@
 <article>
     <h2><a href="{% url 'article_detail' article.slug %}">{{ article.title }}</a>{% if article.status != "published" %} (draft){% endif %}</h2>
     <p>{{ article.published_on|date:"F j, Y" }}</p>
+    {% include "siteblog/_tags.html" %}
     {% if article.article_body.excerpt %}
     <div>{{ article.article_body.excerpt|render_markdown }}</div>
     {% endif %}
@@ -20,6 +21,6 @@
 </article>
 {% endfor %}
 {% else %}
-<p>No blog posts have been published yet.</p>
+<p>{% if tag %}No posts tagged {{ tag }}.{% else %}No blog posts have been published yet.{% endif %}</p>
 {% endif %}
 {% endblock %}

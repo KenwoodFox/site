@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Comment, SiteSetting
+from .models import ArticleTags, Comment, SiteSetting
 
 
 @admin.register(SiteSetting)
@@ -13,6 +13,11 @@ class SiteSettingAdmin(admin.ModelAdmin):
 @admin.action(description="Approve selected comments")
 def approve_comments(modeladmin, request, queryset):
     queryset.update(approved=True)
+
+
+@admin.register(ArticleTags)
+class ArticleTagsAdmin(admin.ModelAdmin):
+    list_display = ("article", "names")
 
 
 @admin.register(Comment)

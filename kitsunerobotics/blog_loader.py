@@ -7,6 +7,8 @@ from django.conf import settings
 from django.utils import timezone
 from django.utils.text import slugify
 
+from kitsunerobotics.models import ArticleTags, tags_for
+from kitsunerobotics.webhooks import notify_post_removed, notify_post_update
 from siteblog.models import Article
 
 LINK = re.compile(r"(!?\[[^\]]*\])\(([^)]+)\)")
@@ -26,6 +28,12 @@ def parse_post(text):
         key, value = line.split(":", 1)
         meta[key.strip().lower()] = value.strip()
     return meta, parts[2].lstrip("\n")
+
+
+def parse_tags(value):
+    if not value:
+        return []
+    return [part for part in re.split(r"[\s,]+", value) if part]
 
 
 def published_on(value):
@@ -56,6 +64,14 @@ def rewrite_links(body, markdown_path, repo_root):
     return LINK.sub(replace, body)
 
 
+def article_body(article):
+    body = article.article_body
+    content = getattr(body, "content", None)
+    if content is None:
+        return "" if body is None else str(body)
+    return content
+
+
 def load_posts(repo_root):
     """Create or update articles from markdown files. Remove articles the repo dropped."""
     repo_root = Path(repo_root)
@@ -73,23 +89,47 @@ def load_posts(repo_root):
         if status not in ("draft", "published"):
             status = "draft"
         body = rewrite_links(body, markdown_path, repo_root)
-        article, _created = Article.objects.get_or_create(
-            slug=slug,
-            defaults={
-                "title": title,
-                "article_body": body,
-                "status": status,
-                "published_on": published_on(meta.get("published")),
-            },
+        tags = parse_tags(meta.get("tags"))
+        raw_published = meta.get("published")
+        when = published_on(raw_published) if raw_published else None
+        article = Article.objects.filter(slug=slug).first()
+        created = article is None
+        if when is None:
+            when = timezone.now() if created else article.published_on
+        if created:
+            article = Article.objects.create(
+                slug=slug,
+                title=title,
+                article_body=body,
+                status=status,
+                published_on=when,
+            )
+        previous_tags = [] if created else tags_for(article)
+        changed = created or (
+            article.title != title
+            or article_body(article) != body
+            or article.status != status
+            or article.published_on != when
+            or previous_tags != tags
         )
-        article.title = title
-        article.article_body = body
-        article.status = status
-        article.published_on = published_on(meta.get("published"))
-        article.save()
+        if changed:
+            article.title = title
+            article.article_body = body
+            article.status = status
+            article.published_on = when
+            article.save()
+            ArticleTags.objects.update_or_create(
+                article=article, defaults={"names": tags}
+            )
+            notify_post_update(article, created, tags)
         slugs.append(slug)
 
-    removed, _details = Article.objects.exclude(slug__in=slugs).delete()
+    removed_articles = list(Article.objects.exclude(slug__in=slugs))
+    for article in removed_articles:
+        notify_post_removed(article)
+    removed, _details = Article.objects.filter(
+        pk__in=[article.pk for article in removed_articles]
+    ).delete()
     return slugs, removed
 
 

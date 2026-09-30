@@ -131,6 +131,15 @@ a.rss img {
   height: 1em;
   vertical-align: text-bottom;
 }
+.post-tags { margin: 0.4em 0; }
+a.post-tag {
+  display: inline-block;
+  border: 1px solid #000000;
+  padding: 0 4px;
+  margin-right: 4px;
+  text-decoration: none;
+}
+a.post-tag:hover { text-decoration: underline; }
 
 label { display: block; margin-top: 0.5em; }
 input, textarea, select, button { font: inherit; }

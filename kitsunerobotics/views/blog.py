@@ -1,9 +1,5 @@
-import logging
-
 import markdown
-import requests
 from django import forms
-from django.conf import settings
 from django.contrib import messages
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.syndication.views import Feed
@@ -12,10 +8,9 @@ from django.urls import reverse
 from django.views.decorators.http import require_POST
 from django.views.generic import DetailView, ListView
 
-from kitsunerobotics.models import Comment, SiteSetting
+from kitsunerobotics.models import Comment, filter_by_tag, tags_for
+from kitsunerobotics.webhooks import notify_comment
 from siteblog.models import Article
-
-logger = logging.getLogger(__name__)
 
 
 class CommentForm(forms.Form):
@@ -35,29 +30,12 @@ def comment_identity(user):
 
 
 def send_comment_webhook(comment):
-    setting, _created = SiteSetting.objects.get_or_create(
-        key="blogpost_webhook",
-        defaults={"value": "None"},
-    )
-    url = setting.value.strip()
-    if not url or url == "None":
-        return
-    needs_approval = "" if comment.approved else " (needs approval)"
-    message = (
-        f"New comment{needs_approval} on {comment.article.title}\n"
-        f"{comment.author_name}: {comment.body[:500]}\n"
-        f"{settings.SITE_URL}{reverse('article_detail', args=[comment.article.slug])}"
-    )
-    try:
-        response = requests.post(url, json={"content": message}, timeout=5)
-        response.raise_for_status()
-    except Exception:
-        logger.exception("Discord webhook failed for comment %s", comment.pk)
+    notify_comment(comment)
 
 
 def articles_for_request(request):
     site = get_current_site(request)
-    articles = Article.objects.visible_on_site(site)
+    articles = Article.objects.visible_on_site(site).prefetch_related("article_tags")
     if request.user.is_staff:
         return articles
     return articles.published()
@@ -68,7 +46,13 @@ class ArticleListView(ListView):
     context_object_name = "articles"
 
     def get_queryset(self):
-        return articles_for_request(self.request)
+        articles = articles_for_request(self.request)
+        return filter_by_tag(articles, self.kwargs.get("tag"))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["tag"] = self.kwargs.get("tag", "")
+        return context
 
 
 class ArticleDetailView(DetailView):
@@ -125,6 +109,7 @@ class ArticleFeed(Feed):
         return (
             Article.objects.published()
             .visible_on_site(self.site)
+            .prefetch_related("article_tags")
             .order_by("-published_on", "title")[:20]
         )
 
@@ -136,6 +121,9 @@ class ArticleFeed(Feed):
 
     def item_pubdate(self, item):
         return item.published_on
+
+    def item_categories(self, item):
+        return tags_for(item)
 
     def item_description(self, item):
         body = item.article_body
